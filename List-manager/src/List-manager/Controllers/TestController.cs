@@ -14,9 +14,10 @@ namespace List_manager.Controllers
 {
     public class TestController : Controller
     {
-        public async Task<string> Index(string searchString, string userName, string password)
+        public async Task<IActionResult> Index(string searchString)
         {
-           
+            string userName = "Rh4istl1n";
+            string password = "9279627759S";
 
             Models.AnimeList list = new Models.AnimeList();
             if (!String.IsNullOrEmpty(searchString))
@@ -37,10 +38,10 @@ namespace List_manager.Controllers
                 
             }
 
-            return list.EntryList.ToString();
+            return View(list);
         }
 
-        //Might need to rewrite this in the future to use XmlSerializerInputFormatter
+        //Might need to rewrite this in the future to use XmlSerializerInputFormatter - also put into using context -using the reader
         private static Models.AnimeList XMLToObject(string xml)
         {
            
@@ -56,13 +57,14 @@ namespace List_manager.Controllers
             }
             catch (Exception exp)
             {
-
+                Console.WriteLine(exp.StackTrace);
             }
             finally
             {
                 if (reader != null)
                 {
                     reader.Dispose();
+                    
                 }
                 
             }

@@ -36,10 +36,10 @@ namespace List_manager.Models
         public string Type { get; set; }
         [XmlElement("status")]
         public string Status { get; set; }
-        [XmlElement("start_date"), DataType(DataType.Date)]
-        public DateTime Start_Date { get; set; }
-        [XmlElement("end_date"), DataType(DataType.Date)]
-        public DateTime End_Date { get; set; }
+        [XmlElement("start_date")]
+        public string Start_Date { get; set; }
+        [XmlElement("end_date")]
+        public string End_Date { get; set; }
         [XmlElement("synopsis")]
         public string Synopsis { get; set; }
         [XmlElement("image")]
