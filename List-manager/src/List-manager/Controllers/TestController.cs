@@ -9,15 +9,39 @@ using System.Net.Http.Headers;
 using System.IO;
 using System.Xml.Serialization;
 using System.Xml;
+using Microsoft.AspNetCore.Identity;
+using List_manager.Data;
+using List_manager.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace List_manager.Controllers
 {
     public class TestController : Controller
     {
+        /// <summary>
+        /// Application DB context
+        /// </summary>
+        private readonly ApplicationDbContext _context;
+
+        /// <summary>
+        /// User manager - attached to application DB context
+        /// </summary>
+        private readonly UserManager<ApplicationUser> _userManager;
+
+
+        public TestController(ApplicationDbContext context, UserManager<ApplicationUser> UserManager)
+        {
+            _context = context;
+            _userManager = UserManager;
+
+        }
+
         public async Task<IActionResult> Index(string searchString)
         {
             string userName = "Rh4istl1n";
             string password = "9279627759S";
+
+            var user = await _userManager.GetUserAsync(User);
 
             Models.AnimeList list = new Models.AnimeList();
             if (!String.IsNullOrEmpty(searchString))
@@ -34,9 +58,8 @@ namespace List_manager.Controllers
                     var result = await httpClient.GetStringAsync(uri+searchString);
 
                     list = XMLToObject(result);
-                    
-                }
-                
+                   
+                }            
             }
 
             return View(list);
