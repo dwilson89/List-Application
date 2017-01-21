@@ -32,6 +32,7 @@ namespace List_manager.Controllers
                     httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/xml"));
 
                     var result = await httpClient.GetStringAsync(uri+searchString);
+
                     list = XMLToObject(result);
                     
                 }

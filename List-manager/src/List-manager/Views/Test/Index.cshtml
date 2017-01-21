@@ -69,7 +69,7 @@
                             
                             <button type="button" class="btn btn-info syn-btn" data-toggle="collapse" data-target="#@item.ID">Synopsis</button>
                             <div id="@item.ID" class="collapse">
-                                <p>Synopsis:  @Html.DisplayFor(modelItem => item.Synopsis)</p>
+                                <p>@Html.Raw(@item.Synopsis)</p>
                             </div>
                             
 

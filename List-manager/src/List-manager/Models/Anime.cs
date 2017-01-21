@@ -41,7 +41,9 @@ namespace List_manager.Models
         [XmlElement("end_date")]
         public string End_Date { get; set; }
         [XmlElement("synopsis")]
-        public string Synopsis { get; set; }
+        public string Synopsis {
+            get; set;
+        }
         [XmlElement("image")]
         public string Image { get; set; }
 
@@ -60,7 +62,7 @@ namespace List_manager.Models
         private DateTime updated_date;
 
         //private bool isInitialized;
-
+        
          //public string Genres { get; set; }
     }
 }

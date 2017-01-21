@@ -36,7 +36,8 @@
           "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0",
           "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0",
           "System.Net.Http": "4.1.0",
-          "System.Xml.XmlSerializer": "4.0.11"
+          "System.Xml.XmlSerializer": "4.0.11",
+          "System.Text.RegularExpressions": "4.1.0"
         },
         "compile": {
           "List-manager.dll": {}
@@ -2856,7 +2857,8 @@
           "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0",
           "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0",
           "System.Net.Http": "4.1.0",
-          "System.Xml.XmlSerializer": "4.0.11"
+          "System.Xml.XmlSerializer": "4.0.11",
+          "System.Text.RegularExpressions": "4.1.0"
         },
         "runtime": {
           "List-manager.dll": {}
