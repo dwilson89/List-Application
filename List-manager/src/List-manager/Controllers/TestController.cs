@@ -13,6 +13,9 @@ using Microsoft.AspNetCore.Identity;
 using List_manager.Data;
 using List_manager.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection;
+using System.Security.Claims;
 
 namespace List_manager.Controllers
 {
@@ -28,18 +31,24 @@ namespace List_manager.Controllers
         /// </summary>
         private readonly UserManager<ApplicationUser> _userManager;
 
+        IDataProtector _protector;
 
-        public TestController(ApplicationDbContext context, UserManager<ApplicationUser> UserManager)
+        public TestController(ApplicationDbContext context, UserManager<ApplicationUser> UserManager, IDataProtectionProvider provider)
         {
             _context = context;
             _userManager = UserManager;
-
+            _protector = provider.CreateProtector("Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationMiddleware");
         }
 
+        [Authorize(ActiveAuthenticationSchemes = "MALCookie")]
         public async Task<IActionResult> Index(string searchString)
         {
-            string userName = "Rh4istl1n";
-            string password = "9279627759S";
+
+            //Might be an alternative way of doing this, look into it
+            var claims = HttpContext.User.Claims.ToDictionary(claim => claim.Type);
+
+            string userName = claims["Username"].ToString().Replace("Username: ","");
+            string password = claims["Secret"].ToString().Replace("Secret: ", "");
 
             var user = await _userManager.GetUserAsync(User);
 

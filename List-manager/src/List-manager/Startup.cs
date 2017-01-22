@@ -12,6 +12,9 @@ using Microsoft.Extensions.Logging;
 using List_manager.Data;
 using List_manager.Models;
 using List_manager.Services;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.DataProtection;
 
 namespace List_manager
 {
@@ -52,6 +55,14 @@ namespace List_manager
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Cookies.ApplicationCookie.AuthenticationScheme = "Default";
+            });
+
+            
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -76,6 +87,23 @@ namespace List_manager
             app.UseIdentity();
 
             // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
+
+           
+
+
+
+            // Authentication for the MAL user credentials
+            app.UseCookieAuthentication(new CookieAuthenticationOptions()
+            {
+                AuthenticationScheme = "MALCookie",
+                LoginPath = new PathString("/MALAccount/Login"),
+
+                AutomaticAuthenticate = false,
+                CookieName = "MALCookie",
+                
+
+            });
+            
 
             app.UseMvc(routes =>
             {
