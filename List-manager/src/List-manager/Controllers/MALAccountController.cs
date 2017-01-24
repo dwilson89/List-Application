@@ -32,51 +32,64 @@ namespace List_manager.Controllers
 
             //if the response return is 200 then its aok
             ViewData["ReturnUrl"] = returnUrl;
-
-            var success = false;
-
-            const string uri = "https://myanimelist.net/api/account/verify_credentials.xml";
-            using (var httpClient = new HttpClient())
+            if (ModelState.IsValid)
             {
-                //need to do this properly in the future
-                var byteArray = Encoding.ASCII.GetBytes($"{malUser.Username}:{malUser.Password}");
-                var header = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
-                httpClient.DefaultRequestHeaders.Authorization = header;
-                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/xml"));
+                var success = false;
 
-                var result = await httpClient.GetAsync(uri);
-
-                success = result.IsSuccessStatusCode;
-               
-            }
-
-            if (success)
-            {
-                var claims = new List<Claim>
+                const string uri = "https://myanimelist.net/api/account/verify_credentials.xml";
+                using (var httpClient = new HttpClient())
                 {
-                    new Claim("Username", malUser.Username, ClaimValueTypes.String),
-                    new Claim("Secret", malUser.Password, ClaimValueTypes.String)
-                };
+                    //need to do this properly in the future
+                    var byteArray = Encoding.ASCII.GetBytes($"{malUser.Username}:{malUser.Password}");
+                    var header = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+                    httpClient.DefaultRequestHeaders.Authorization = header;
+                    httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/xml"));
 
-                var userIdentity = new ClaimsIdentity(claims, "MAL");
+                    var result = await httpClient.GetAsync(uri);
 
-                var principal = new ClaimsPrincipal(userIdentity);
+                    success = result.IsSuccessStatusCode;
 
-                //TODO: might add in an expiration date
-                await HttpContext.Authentication.SignInAsync("MALCookie", principal);
+                }
 
-                return Redirect(returnUrl);
+                if (success)
+                {
+                    var claims = new List<Claim>
+                    {
+                        new Claim("Username", malUser.Username, ClaimValueTypes.String),
+                        new Claim("Secret", malUser.Password, ClaimValueTypes.String)
+                    };
 
-            } else
-            {
-                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                return View(malUser);
+                    var userIdentity = new ClaimsIdentity(claims, "MAL");
+
+                    var principal = new ClaimsPrincipal(userIdentity);
+
+                    //TODO: might add in an expiration date
+                    await HttpContext.Authentication.SignInAsync("MALCookie", principal);
+
+                    return Redirect(returnUrl);
+
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    return View(malUser);
+                }
             }
 
             return View(malUser);
         }
 
-       
+        //
+        // POST: /Account/LogOff
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> LogOff()
+        {
+            await HttpContext.Authentication.SignOutAsync("MALCookie");
+            
+            //TODO redirect to index page
+            return RedirectToAction(nameof(HomeController.Index), "Home");
+        }
 
 
     }

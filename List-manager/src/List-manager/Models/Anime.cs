@@ -48,9 +48,6 @@ namespace List_manager.Models
         public string Image { get; set; }
 
         //Additional Fields - Will need user to submit these
-
-       
-
         public string Link { get {
                 //needs iof condition
 
