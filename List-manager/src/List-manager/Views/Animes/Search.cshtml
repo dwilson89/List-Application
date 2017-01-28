@@ -1,0 +1,109 @@
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@model AnimeList
+
+@{
+    ViewData["Title"] = "Search";
+}
+<h2>Search Page</h2>
+
+<div class="container-fluid bg-1">
+
+    <form asp-controller="Animes" asp-action="Search" method="get" class="form-inline">
+
+        <div class="input-group">
+            <input type="text" name="SearchString" placeholder="Search for" class="form-control" size="50">
+            <div class="input-group-btn">
+                <input type="submit" class="btn" value="Search" />
+            </div>
+        </div>
+    </form>
+
+</div>
+
+<div class="container-fluid bg-2">
+
+    <table class="table table-bordered table-striped text-center">
+        <tr>
+
+            <th>
+                Title
+            </th>
+            <th>
+                Type
+            </th>
+            <th>
+                Score
+            </th>
+            <th>
+                Status
+            </th>
+        </tr>
+
+        <tbody>
+            @{int i = 0;}
+            @foreach (var item in Model.EntryList)
+            {
+                
+
+                    <tr>
+                        <td class="title-desc col-md-8">
+
+                            <div class="col-md-2">
+                                <img src="@Url.Content(@item.Image)" class="img-responsive">
+                            </div>
+
+                            <div class="col-md-10">
+                                <a href="@Url.Content(@item.Link)">@Html.DisplayFor(modelItem => item.Title)</a>
+
+                                @if (!String.IsNullOrEmpty(@item.English))
+                                {
+
+                                    <p>Eng: @Html.DisplayFor(modelItem => item.English)</p>
+                                }
+
+                                @if (!String.IsNullOrEmpty(@item.Synonyms))
+                                {
+                                    <p>Syn: @Html.DisplayFor(modelItem => item.Synonyms)</p>
+                                }
+
+                                <p>@Html.DisplayFor(modelItem => item.Start_Date) - @Html.DisplayFor(modelItem => item.End_Date)</p>
+
+                                <button type="button" class="btn btn-info syn-btn" data-toggle="collapse" data-target="#@item.ID">Synopsis</button>
+                                <div id="@item.ID" class="collapse">
+                                    <p>@Html.Raw(@item.Synopsis)</p>
+                                </div>
+
+
+                            </div>
+                        </td>
+
+                        <td class="v-center">
+                            <p>@Html.DisplayFor(modelItem => item.Type) (@Html.DisplayFor(modelItem => item.Episodes) eps)</p>
+                        </td>
+
+                        <td class="v-center">
+                            @Html.DisplayFor(modelItem => item.Score)
+                        </td>
+
+                        <td class="v-center">
+                            @Html.DisplayFor(modelItem => item.Status)@*needs to have a conditional on what to display*@
+                        </td>
+                        <td>
+                            
+                            <form asp-action="Add" asp-route-id="@i" method="get">
+                                <input type="submit" value="Add" class="btn btn-info syn-btn" />
+                            </form>
+
+                        </td>
+                    </tr>
+
+
+                i++;
+            }
+        </tbody>
+    </table>
+
+</div>

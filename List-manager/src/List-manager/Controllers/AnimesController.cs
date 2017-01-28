@@ -7,16 +7,25 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using List_manager.Data;
 using List_manager.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Text;
+using System.Net.Http.Headers;
+using System.Xml.Serialization;
+using System.Xml;
+using System.IO;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace List_manager.Controllers
 {
     public class AnimesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private IMemoryCache _cache;
 
-        public AnimesController(ApplicationDbContext context)
+        public AnimesController(ApplicationDbContext context, IMemoryCache cache)
         {
-            _context = context;    
+            _context = context;
+            _cache = cache;
         }
 
         // GET: Animes
@@ -147,5 +156,106 @@ namespace List_manager.Controllers
         {
             return _context.Anime.Any(e => e.ID == id);
         }
+
+        public IActionResult Add(int id)
+        {
+            Anime anime = ((AnimeList)_cache.Get("SearchResults")).EntryList[id];
+           
+            return View(anime);
+        }
+
+        // POST: Animes/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost, ActionName("Add")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddToDB([Bind("ID,DBID,End_Date,English,Episodes,Image,Score,Start_Date,Status,Synonyms,Synopsis,Title,Type,User_Status")] Anime anime)
+        {
+            
+            if (ModelState.IsValid)
+            {
+                _context.Add(anime);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Search",new { searchString =_cache.Get("SearchString") });
+            }
+            return View(anime);
+        }
+
+
+        [Authorize(ActiveAuthenticationSchemes = "MALCookie")]
+        public async Task<IActionResult> Search(string searchString)
+        {
+
+            //Might be an alternative way of doing this, look into it
+            //var claims = HttpContext.User.Claims.ToDictionary(claim => claim.Type, claim => claim.Value);
+            //string userName = claims["Username"];
+            //string password = claims["Secret"];
+
+            string userName = HttpContext.User.Claims.First(p => p.Type == "Username").Value;
+            string password = HttpContext.User.Claims.First(p => p.Type == "Secret").Value;
+
+
+            Models.AnimeList list = new Models.AnimeList();
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                const string uri = "https://myanimelist.net/api/anime/search.xml?q=";
+                using (var httpClient = new System.Net.Http.HttpClient())
+                {
+                    //need to do this properly in the future
+                    var byteArray = Encoding.ASCII.GetBytes($"{userName}:{password}");
+                    var header = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+                    httpClient.DefaultRequestHeaders.Authorization = header;
+                    httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/xml"));
+
+                    var result = await httpClient.GetStringAsync(uri + searchString);
+
+                    list = XMLToObject(result);
+                    _cache.CreateEntry("SearchString");
+                    _cache.CreateEntry("SearchResults");
+
+                    _cache.Set("SearchString", searchString);
+                    _cache.Set("SearchResults", list);
+                }
+            }
+
+            return View(list);
+        }
+
+        //Might need to rewrite this in the future to use XmlSerializerInputFormatter - also put into using context -using the reader
+        private static Models.AnimeList XMLToObject(string xml)
+        {
+
+            XmlSerializer serializer = null;
+            XmlReader reader = null;
+            Models.AnimeList animeList = new Models.AnimeList();
+            try
+            {
+                MemoryStream s = new MemoryStream(Encoding.UTF8.GetBytes(xml));
+                serializer = new XmlSerializer(typeof(Models.AnimeList));
+                reader = XmlReader.Create(s);
+                animeList = (Models.AnimeList)serializer.Deserialize(reader);
+            }
+            catch (Exception exp)
+            {
+                Console.WriteLine(exp.StackTrace);
+            }
+            finally
+            {
+                if (reader != null)
+                {
+                    reader.Dispose();
+
+                }
+
+            }
+
+            return animeList;
+        }
+
+        
+
     }
+
+
 }
+

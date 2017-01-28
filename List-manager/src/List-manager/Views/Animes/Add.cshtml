@@ -1,0 +1,116 @@
+@model List_manager.Models.Anime
+
+@{
+    ViewData["Title"] = "Add";
+}
+
+<h2>Add</h2>
+
+<div>
+    <h4>Anime</h4>
+    <hr />
+
+    <form asp-action="Add">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <select asp-for="User_Status" class="form-control">
+            <option value="On Hold">On Hold</option>
+            <option value="On Hold">Watch List</option>
+        </select>
+        <input type="submit" value="Add" class="btn btn-default" />
+    </form>
+
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DBID)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DBID)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ID)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ID)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.English)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.English)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Synonyms)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Synonyms)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Episodes)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Episodes)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Score)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Score)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Type)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Type)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Start_Date)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Start_Date)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.End_Date)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.End_Date)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Synopsis)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Synopsis)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Image)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Image)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Link)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Link)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.User_Status)
+        </dt>
+        
+    </dl>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to List</a>
+</div>

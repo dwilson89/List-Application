@@ -1,21 +1,24 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using System.Text;
-using System.Net.Http.Headers;
-using System.IO;
-using System.Xml.Serialization;
-using System.Xml;
-using Microsoft.AspNetCore.Identity;
 using List_manager.Data;
+using Microsoft.AspNetCore.Identity;
 using List_manager.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Net.Http;
+using System.Text;
+using System.Net.Http.Headers;
+using System.Xml.Serialization;
+using System.Xml;
+using System.IO;
 
+
+/*Might remove and consolidate this in the future*/
 namespace List_manager.Controllers
 {
-    public class TestController : Controller
+    public class MALController : Controller
     {
         /// <summary>
         /// Application DB context
@@ -27,13 +30,13 @@ namespace List_manager.Controllers
         /// </summary>
         private readonly UserManager<ApplicationUser> _userManager;
 
-       
 
-        public TestController(ApplicationDbContext context, UserManager<ApplicationUser> UserManager)
+
+        public MALController(ApplicationDbContext context)
         {
             _context = context;
-            _userManager = UserManager;
             
+
         }
 
         [Authorize(ActiveAuthenticationSchemes = "MALCookie")]
@@ -48,25 +51,24 @@ namespace List_manager.Controllers
             string userName = HttpContext.User.Claims.First(p => p.Type == "Username").Value;
             string password = HttpContext.User.Claims.First(p => p.Type == "Secret").Value;
 
-            var user = await _userManager.GetUserAsync(User);
 
             Models.AnimeList list = new Models.AnimeList();
             if (!String.IsNullOrEmpty(searchString))
             {
                 const string uri = "https://myanimelist.net/api/anime/search.xml?q=";
                 using (var httpClient = new HttpClient())
-                {   
+                {
                     //need to do this properly in the future
                     var byteArray = Encoding.ASCII.GetBytes($"{userName}:{password}");
                     var header = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
                     httpClient.DefaultRequestHeaders.Authorization = header;
                     httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/xml"));
 
-                    var result = await httpClient.GetStringAsync(uri+searchString);
+                    var result = await httpClient.GetStringAsync(uri + searchString);
 
                     list = XMLToObject(result);
-                   
-                }            
+
+                }
             }
 
             return View(list);
@@ -75,7 +77,7 @@ namespace List_manager.Controllers
         //Might need to rewrite this in the future to use XmlSerializerInputFormatter - also put into using context -using the reader
         private static Models.AnimeList XMLToObject(string xml)
         {
-           
+
             XmlSerializer serializer = null;
             XmlReader reader = null;
             Models.AnimeList animeList = new Models.AnimeList();
@@ -95,15 +97,13 @@ namespace List_manager.Controllers
                 if (reader != null)
                 {
                     reader.Dispose();
-                    
+
                 }
-                
+
             }
 
             return animeList;
         }
 
     }
-
-    
 }
