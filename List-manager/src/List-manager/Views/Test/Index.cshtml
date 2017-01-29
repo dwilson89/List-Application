@@ -53,7 +53,7 @@
                         </div>
 
                         <div class="col-md-10">
-                            <a href="@Url.Content(@item.Link)">@Html.DisplayFor(modelItem => item.Title)</a>
+                            <a href="@Url.Content(@item.GetLink())">@Html.DisplayFor(modelItem => item.Title)</a>
                             
                             @if (!String.IsNullOrEmpty(@item.English)){
 

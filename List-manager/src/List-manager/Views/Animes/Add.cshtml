@@ -14,18 +14,28 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <select asp-for="User_Status" class="form-control">
             <option value="On Hold">On Hold</option>
-            <option value="On Hold">Watch List</option>
+            <option value="Plan to watch">Plan to watch</option>
         </select>
+
+        <input type="hidden" asp-for="ID"/>
+        <input type="hidden" asp-for="End_Date"/>
+        <input type="hidden" asp-for="English"/>
+        <input type="hidden" asp-for="Episodes"/>
+        <input type="hidden" asp-for="Image" />
+        <input type="hidden" asp-for="Score" />
+        <input type="hidden" asp-for="Start_Date"/>
+        <input type="hidden" asp-for="Status" />
+        <input type="hidden" asp-for="Synonyms" />
+        <input type="hidden" asp-for="Synopsis" />
+        <input type="hidden" asp-for="Title" />
+        <input type="hidden" asp-for="Type" />
+
+        <input type="hidden" name="returnUrl" value="@ViewData["returnUrl"]" />
         <input type="submit" value="Add" class="btn btn-default" />
     </form>
 
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.DBID)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.DBID)
-        </dd>
+        
         <dt>
             @Html.DisplayNameFor(model => model.ID)
         </dt>
@@ -99,12 +109,6 @@
             @Html.DisplayFor(model => model.Image)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Link)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Link)
-        </dd>
-        <dt>
             @Html.DisplayNameFor(model => model.User_Status)
         </dt>
         
@@ -112,5 +116,5 @@
 </div>
 <div>
     @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Back to List</a>
+    <a href="@ViewData["returnUrl"]">Back to List</a>
 </div>

@@ -46,17 +46,18 @@
             @{int i = 0;}
             @foreach (var item in Model.EntryList)
             {
-                
+
 
                     <tr>
                         <td class="title-desc col-md-8">
 
                             <div class="col-md-2">
+                                <input type="hidden" asp-for="@item.Image" />
                                 <img src="@Url.Content(@item.Image)" class="img-responsive">
                             </div>
 
                             <div class="col-md-10">
-                                <a href="@Url.Content(@item.Link)">@Html.DisplayFor(modelItem => item.Title)</a>
+                                <a href="@Url.Content(@item.GetLink())">@Html.DisplayFor(modelItem => item.Title)</a>
 
                                 @if (!String.IsNullOrEmpty(@item.English))
                                 {
@@ -93,12 +94,28 @@
                         </td>
                         <td>
                             
-                            <form asp-action="Add" asp-route-id="@i" method="get">
-                                <input type="submit" value="Add" class="btn btn-info syn-btn" />
-                            </form>
+                           <form asp-controller="Animes" asp-action="Add" method="get">
+                               
+                               <input type="hidden" name="ID" value="@item.ID"/>
+                               <input type="hidden" name="End_Date" value="@item.End_Date" />
+                               <input type="hidden" name="English" value="@item.English" />
+                               <input type="hidden" name="Episodes" value="@item.Episodes" />
+                               <input type="hidden" name="Image" value="@item.Image" />
+                               <input type="hidden" name="Score" value="@item.Score" />
+                               <input type="hidden" name="Start_Date" value="@item.Start_Date" />
+                               <input type="hidden" name="Status" value="@item.Status" />
+                               <input type="hidden" name="Synonyms" value="@item.Synonyms" />
+                               <input type="hidden" name="Synopsis" value="@item.Synopsis" />
+                               <input type="hidden" name="Title" value="@item.Title" />
+                               <input type="hidden" name="Type" value="@item.Type" />
+                               <input type="hidden" name="User_Status" value="@item.User_Status" />
+                               
+                               <input type="submit" value="Add" class="btn btn-info syn-btn" />  
+                           </form>
 
                         </td>
                     </tr>
+                
 
 
                 i++;
@@ -107,3 +124,7 @@
     </table>
 
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

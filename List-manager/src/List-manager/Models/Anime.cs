@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
@@ -11,12 +12,12 @@ namespace List_manager.Models
     {
         //private static int dbId = 1;
 
-        /*public Anime()
+        public Anime()
         {
-            DBID = dbId++;
-            updated_date = new DateTime();
-        }*/
+            User_Status = "Plan to watch";
+        }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int DBID { get; set; }
 
         // MAL XML Fields
@@ -48,11 +49,9 @@ namespace List_manager.Models
         public string Image { get; set; }
 
         //Additional Fields - Will need user to submit these
-        public string Link { get {
-                //needs iof condition
-
-                return $"https://myanimelist.net/anime/{ID}/{Title.Replace(" ", "_")}";
-            }  } 
+        public string GetLink() { 
+            return $"https://myanimelist.net/anime/{ID}/{Title.Replace(" ", "_")}";
+        }  
 
         public string User_Status { get; set; }
 

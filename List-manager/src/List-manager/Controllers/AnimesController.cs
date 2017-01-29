@@ -62,7 +62,7 @@ namespace List_manager.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,DBID,End_Date,English,Episodes,Image,Score,Start_Date,Status,Synonyms,Synopsis,Title,Type,User_Status")] Anime anime)
+        public async Task<IActionResult> Create([Bind("ID,End_Date,English,Episodes,Image,Score,Start_Date,Status,Synonyms,Synopsis,Title,Type,User_Status")] Anime anime)
         {
             if (ModelState.IsValid)
             {
@@ -94,7 +94,7 @@ namespace List_manager.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,DBID,End_Date,English,Episodes,Image,Score,Start_Date,Status,Synonyms,Synopsis,Title,Type,User_Status")] Anime anime)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,End_Date,English,Episodes,Image,Score,Start_Date,Status,Synonyms,Synopsis,Title,Type,User_Status")] Anime anime)
         {
             if (id != anime.ID)
             {
@@ -157,10 +157,10 @@ namespace List_manager.Controllers
             return _context.Anime.Any(e => e.ID == id);
         }
 
-        public IActionResult Add(int id)
+        public IActionResult Add([Bind("ID,End_Date,English,Episodes,Image,Score,Start_Date,Status,Synonyms,Synopsis,Title,Type,User_Status")]Anime anime)
         {
-            Anime anime = ((AnimeList)_cache.Get("SearchResults")).EntryList[id];
-           
+            //Anime anime = ((AnimeList)_cache.Get("SearchResults")).EntryList[id];
+            ViewData["returnUrl"] = Request.Headers["Referer"].ToString();
             return View(anime);
         }
 
@@ -169,20 +169,20 @@ namespace List_manager.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost, ActionName("Add")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddToDB([Bind("ID,DBID,End_Date,English,Episodes,Image,Score,Start_Date,Status,Synonyms,Synopsis,Title,Type,User_Status")] Anime anime)
+        public async Task<IActionResult> AddToDB([Bind("ID,End_Date,English,Episodes,Image,Score,Start_Date,Status,Synonyms,Synopsis,Title,Type,User_Status")]Anime anime, string returnUrl = null)
         {
-            
+            ViewData["return"] = returnUrl;
             if (ModelState.IsValid)
             {
                 _context.Add(anime);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Search",new { searchString =_cache.Get("SearchString") });
+                return Redirect(returnUrl);
             }
             return View(anime);
         }
 
 
-        [Authorize(ActiveAuthenticationSchemes = "MALCookie")]
+        [Authorize(ActiveAuthenticationSchemes = "MALCookie,Default")]
         public async Task<IActionResult> Search(string searchString)
         {
 
@@ -213,7 +213,7 @@ namespace List_manager.Controllers
                     _cache.CreateEntry("SearchString");
                     _cache.CreateEntry("SearchResults");
 
-                    _cache.Set("SearchString", searchString);
+                    //_cache.Set("SearchString", searchString);
                     _cache.Set("SearchResults", list);
                 }
             }
