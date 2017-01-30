@@ -17,7 +17,7 @@
             <option value="Plan to watch">Plan to watch</option>
         </select>
 
-        <input type="hidden" asp-for="ID"/>
+        <input type="hidden" asp-for="MALID"/>
         <input type="hidden" asp-for="End_Date"/>
         <input type="hidden" asp-for="English"/>
         <input type="hidden" asp-for="Episodes"/>
@@ -37,10 +37,10 @@
     <dl class="dl-horizontal">
         
         <dt>
-            @Html.DisplayNameFor(model => model.ID)
+            @Html.DisplayNameFor(model => model.MALID)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.ID)
+            @Html.DisplayFor(model => model.MALID)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Title)

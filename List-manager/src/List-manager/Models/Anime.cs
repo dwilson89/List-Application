@@ -18,11 +18,11 @@ namespace List_manager.Models
         }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int DBID { get; set; }
+        public int ID { get; set; }
 
         // MAL XML Fields
         [XmlElement("id")]
-        public int ID { get; set; }
+        public int MALID { get; set; }
         [XmlElement("title")]
         public string Title { get; set; }
         [XmlElement("english")]
@@ -50,7 +50,7 @@ namespace List_manager.Models
 
         //Additional Fields - Will need user to submit these
         public string GetLink() { 
-            return $"https://myanimelist.net/anime/{ID}/{Title.Replace(" ", "_")}";
+            return $"https://myanimelist.net/anime/{MALID}/{Title.Replace(" ", "_")}";
         }  
 
         public string User_Status { get; set; }

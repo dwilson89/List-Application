@@ -92,11 +92,11 @@
                         <td class="v-center">
                             @Html.DisplayFor(modelItem => item.Status)@*needs to have a conditional on what to display*@
                         </td>
-                        <td>
+                        <td class="v-center">
                             
-                           <form asp-controller="Animes" asp-action="Add" method="get">
+                           @*<form asp-controller="Animes" asp-action="Search" method="post">
                                
-                               <input type="hidden" name="ID" value="@item.ID"/>
+                               <input type="hidden" name="ID" value="@item.MALID"/>
                                <input type="hidden" name="End_Date" value="@item.End_Date" />
                                <input type="hidden" name="English" value="@item.English" />
                                <input type="hidden" name="Episodes" value="@item.Episodes" />
@@ -111,7 +111,13 @@
                                <input type="hidden" name="User_Status" value="@item.User_Status" />
                                
                                <input type="submit" value="Add" class="btn btn-info syn-btn" />  
-                           </form>
+                           </form>*@
+
+                            <form asp-controller="Animes" asp-action="Add" method="get">
+
+                                <input type="hidden" name="id" value="@i" />
+                                <input type="submit" value="Add" class="btn btn-info syn-btn" />
+                            </form>
 
                         </td>
                     </tr>

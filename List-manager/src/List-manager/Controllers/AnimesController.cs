@@ -62,7 +62,7 @@ namespace List_manager.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,End_Date,English,Episodes,Image,Score,Start_Date,Status,Synonyms,Synopsis,Title,Type,User_Status")] Anime anime)
+        public async Task<IActionResult> Create([Bind("MALID,End_Date,English,Episodes,Image,Score,Start_Date,Status,Synonyms,Synopsis,Title,Type,User_Status")] Anime anime)
         {
             if (ModelState.IsValid)
             {
@@ -94,7 +94,7 @@ namespace List_manager.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,End_Date,English,Episodes,Image,Score,Start_Date,Status,Synonyms,Synopsis,Title,Type,User_Status")] Anime anime)
+        public async Task<IActionResult> Edit(int id, [Bind("MALID,End_Date,English,Episodes,Image,Score,Start_Date,Status,Synonyms,Synopsis,Title,Type,User_Status")] Anime anime)
         {
             if (id != anime.ID)
             {
@@ -157,11 +157,34 @@ namespace List_manager.Controllers
             return _context.Anime.Any(e => e.ID == id);
         }
 
-        public IActionResult Add([Bind("ID,End_Date,English,Episodes,Image,Score,Start_Date,Status,Synonyms,Synopsis,Title,Type,User_Status")]Anime anime)
+   
+
+        [HttpPost]
+        public IActionResult Search(Anime anime)
         {
-            //Anime anime = ((AnimeList)_cache.Get("SearchResults")).EntryList[id];
-            ViewData["returnUrl"] = Request.Headers["Referer"].ToString();
-            return View(anime);
+            TempData["returnUrl"] = Request.Headers["Referer"].ToString();
+            return View("Add", anime);
+        }
+
+        //Might not be proper to rely on a cache, however given the nature for the time being this will do
+        public IActionResult Add(int id)
+        {
+            try {
+                ViewData["returnUrl"] = Request.Headers["Referer"].ToString();
+
+                
+                Anime anime = ((AnimeList)_cache.Get("SearchResults")).EntryList[id];
+                
+
+                return View(anime);
+
+            } catch (Exception ex)//Accessing the _cache will fail
+            {
+                //log error
+                //inform the user and redirect
+            } 
+
+            return RedirectToAction("Search");
         }
 
         // POST: Animes/Create
@@ -169,7 +192,7 @@ namespace List_manager.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost, ActionName("Add")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddToDB([Bind("ID,End_Date,English,Episodes,Image,Score,Start_Date,Status,Synonyms,Synopsis,Title,Type,User_Status")]Anime anime, string returnUrl = null)
+        public async Task<IActionResult> AddToDB([Bind("MALID,End_Date,English,Episodes,Image,Score,Start_Date,Status,Synonyms,Synopsis,Title,Type,User_Status")]Anime anime, string returnUrl = null)
         {
             ViewData["return"] = returnUrl;
             if (ModelState.IsValid)
