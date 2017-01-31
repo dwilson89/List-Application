@@ -26,7 +26,7 @@ namespace List_manager.Controllers
         // GET: /MALAccount/Login
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Login(MALUser malUser, string returnUrl = null)
+        public async Task<IActionResult> Login(MALUserLogin malUser, string returnUrl = null)
         {
             //query the api
 
