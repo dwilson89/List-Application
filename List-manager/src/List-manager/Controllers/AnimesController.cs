@@ -14,23 +14,30 @@ using System.Xml.Serialization;
 using System.Xml;
 using System.IO;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.AspNetCore.Identity;
 
 namespace List_manager.Controllers
 {
+    [Authorize(Policy = "DefaultPolicy")]
     public class AnimesController : Controller
     {
         private readonly ApplicationDbContext _context;
         private IMemoryCache _cache;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public AnimesController(ApplicationDbContext context, IMemoryCache cache)
+        public AnimesController(ApplicationDbContext context, IMemoryCache cache, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _cache = cache;
+            _userManager = userManager;
         }
+
+        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         // GET: Animes
         public async Task<IActionResult> Index()
         {
+            
             return View(await _context.Anime.ToListAsync());
         }
 
@@ -191,6 +198,7 @@ namespace List_manager.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost, ActionName("Add")]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddToDB([Bind("MALID,End_Date,English,Episodes,Image,Score,Start_Date,Status,Synonyms,Synopsis,Title,Type,User_Status")]Anime anime, string returnUrl = null)
         {
@@ -204,19 +212,35 @@ namespace List_manager.Controllers
             return View(anime);
         }
 
-
-        [Authorize(ActiveAuthenticationSchemes = "MALCookie,Default")]
+        [Authorize(Policy = "MALApiPolicy")]
         public async Task<IActionResult> Search(string searchString)
         {
 
             //Might be an alternative way of doing this, look into it
             //var claims = HttpContext.User.Claims.ToDictionary(claim => claim.Type, claim => claim.Value);
             //string userName = claims["Username"];
-            //string password = claims["Secret"];
+            //string password = claims["Secret"]
+            
+            var malCookiesAuth = HttpContext.Authentication.GetAuthenticateInfoAsync("MALCookie");
 
-            string userName = HttpContext.User.Claims.First(p => p.Type == "Username").Value;
-            string password = HttpContext.User.Claims.First(p => p.Type == "Secret").Value;
 
+          
+
+            if (malCookiesAuth.Result.Description.AuthenticationScheme == null)
+            {
+                return RedirectToAction("Login", "MALAccount",new { returnUrl = "/Animes/Search"});
+            }
+
+            //todo add in exception handling if something goes wrong
+            var claims = malCookiesAuth.Result.Principal.Claims;
+            string userName = claims.First(p => p.Type == "Username").Value;
+            string password = claims.First(p => p.Type == "Secret").Value;
+
+
+            var defaultAuth = HttpContext.Authentication.GetAuthenticateInfoAsync("Default");
+
+            //var user = await GetCurrentUserAsync();
+            //var userId = user?.Id;
 
             Models.AnimeList list = new Models.AnimeList();
             if (!String.IsNullOrEmpty(searchString))
@@ -274,11 +298,6 @@ namespace List_manager.Controllers
 
             return animeList;
         }
-
-        
-
     }
-
-
 }
 

@@ -16,7 +16,6 @@ namespace List_manager.Controllers
     {
         // GET: /MALAccount/Login
         [HttpGet]
-        [AllowAnonymous]
         public IActionResult Login(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
@@ -25,7 +24,6 @@ namespace List_manager.Controllers
 
         // GET: /MALAccount/Login
         [HttpPost]
-        [AllowAnonymous]
         public async Task<IActionResult> Login(MALUserLogin malUser, string returnUrl = null)
         {
             //query the api

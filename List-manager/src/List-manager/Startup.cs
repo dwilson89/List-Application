@@ -61,9 +61,27 @@ namespace List_manager
             services.Configure<IdentityOptions>(options =>
             {
                 options.Cookies.ApplicationCookie.AuthenticationScheme = "Default";
+                options.Cookies.ApplicationCookie.ExpireTimeSpan = TimeSpan.FromDays(150);
+                options.Cookies.ApplicationCookie.LoginPath = "/Account/Login";
+                options.Cookies.ApplicationCookie.AutomaticAuthenticate = false;
+                options.Cookies.ApplicationCookie.AutomaticChallenge = true;
             });
 
-            
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("MALApiPolicy", policy =>
+                {
+                    policy.AddAuthenticationSchemes("MALCookie");
+                    policy.RequireAuthenticatedUser();
+                });
+
+                options.AddPolicy("DefaultPolicy", policy =>
+                {
+                    policy.AddAuthenticationSchemes("Default");
+                    policy.RequireAuthenticatedUser();
+                });
+
+            });
 
         }
 
@@ -99,7 +117,7 @@ namespace List_manager
             {
                 AuthenticationScheme = "MALCookie",
                 LoginPath = new PathString("/MALAccount/Login"),
-
+                AutomaticChallenge = false,
                 AutomaticAuthenticate = false,
                 CookieName = "MALCookie",
                 
