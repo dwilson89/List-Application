@@ -108,7 +108,7 @@ namespace List_manager
 
             // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
 
-           
+
 
 
 
@@ -120,7 +120,7 @@ namespace List_manager
                 AutomaticChallenge = false,
                 AutomaticAuthenticate = false,
                 CookieName = "MALCookie",
-                
+                ExpireTimeSpan = TimeSpan.FromDays(150)
 
             });
             

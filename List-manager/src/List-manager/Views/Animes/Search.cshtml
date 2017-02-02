@@ -7,130 +7,136 @@
 @{
     ViewData["Title"] = "Search";
 }
-<h2>Search Page</h2>
 
-<div class="container-fluid bg-1">
-
-    <form asp-controller="Animes" asp-action="Search" method="get" class="form-inline">
+<h2 class="text-center">Anime Search</h2>
+<div class="container text-center">
+    
+    <form asp-controller="Animes" asp-action="Search" method="get">
 
         <div class="input-group">
-            <input type="text" name="SearchString" placeholder="Search for" class="form-control" size="50">
-            <div class="input-group-btn">
-                <input type="submit" class="btn" value="Search" />
-            </div>
+            <input type="search" name="SearchString" placeholder="Search for anime..." class="form-control search-bar">
+            <span class="input-group-btn">
+                <button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
+            </span>
         </div>
     </form>
 
 </div>
 
-<div class="container-fluid bg-2">
+<div class="container body-content">
+    <div class="container-fluid bg-2">
 
-    <table class="table table-bordered table-striped text-center">
-        <tr>
+        @if (Model.EntryList.Count != 0)
+        {
+            <table class="table table-bordered table-striped text-center">
+                <tr>
 
-            <th>
-                Title
-            </th>
-            <th>
-                Type
-            </th>
-            <th>
-                Score
-            </th>
-            <th>
-                Status
-            </th>
-        </tr>
+                    <th>
+                        Title
+                    </th>
+                    <th>
+                        Type
+                    </th>
+                    <th>
+                        Score
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                </tr>
 
-        <tbody>
-            @{int i = 0;}
-            @foreach (var item in Model.EntryList)
-            {
+                <tbody>
+                    @{int i = 0;}
+                    @foreach (var item in Model.EntryList)
+                    {
 
 
-                    <tr>
-                        <td class="title-desc col-md-8">
+                        <tr>
+                            <td class="title-desc col-md-8">
 
-                            <div class="col-md-2">
-                                <input type="hidden" asp-for="@item.Image" />
-                                <img src="@Url.Content(@item.Image)" class="img-responsive">
-                            </div>
-
-                            <div class="col-md-10">
-                                <a href="@Url.Content(@item.GetLink())">@Html.DisplayFor(modelItem => item.Title)</a>
-
-                                @if (!String.IsNullOrEmpty(@item.English))
-                                {
-
-                                    <p>Eng: @Html.DisplayFor(modelItem => item.English)</p>
-                                }
-
-                                @if (!String.IsNullOrEmpty(@item.Synonyms))
-                                {
-                                    <p>Syn: @Html.DisplayFor(modelItem => item.Synonyms)</p>
-                                }
-
-                                <p>@Html.DisplayFor(modelItem => item.Start_Date) - @Html.DisplayFor(modelItem => item.End_Date)</p>
-
-                                <button type="button" class="btn btn-info syn-btn" data-toggle="collapse" data-target="#@item.ID">Synopsis</button>
-                                <div id="@item.ID" class="collapse">
-                                    <p>@Html.Raw(@item.Synopsis)</p>
+                                <div class="col-md-2">
+                                    <input type="hidden" asp-for="@item.Image" />
+                                    <img src="@Url.Content(@item.Image)" class="img-responsive">
                                 </div>
 
+                                <div class="col-md-10">
+                                    <a href="@Url.Content(@item.GetLink())">@Html.DisplayFor(modelItem => item.Title)</a>
 
-                            </div>
-                        </td>
+                                    @if (!String.IsNullOrEmpty(@item.English))
+                                    {
 
-                        <td class="v-center">
-                            <p>@Html.DisplayFor(modelItem => item.Type) (@Html.DisplayFor(modelItem => item.Episodes) eps)</p>
-                        </td>
+                                        <p>Eng: @Html.DisplayFor(modelItem => item.English)</p>
+                                    }
 
-                        <td class="v-center">
-                            @Html.DisplayFor(modelItem => item.Score)
-                        </td>
+                                    @if (!String.IsNullOrEmpty(@item.Synonyms))
+                                    {
+                                        <p>Syn: @Html.DisplayFor(modelItem => item.Synonyms)</p>
+                                    }
 
-                        <td class="v-center">
-                            @Html.DisplayFor(modelItem => item.Status)@*needs to have a conditional on what to display*@
-                        </td>
-                        <td class="v-center">
-                            
-                           @*<form asp-controller="Animes" asp-action="Search" method="post">
-                               
-                               <input type="hidden" name="ID" value="@item.MALID"/>
-                               <input type="hidden" name="End_Date" value="@item.End_Date" />
-                               <input type="hidden" name="English" value="@item.English" />
-                               <input type="hidden" name="Episodes" value="@item.Episodes" />
-                               <input type="hidden" name="Image" value="@item.Image" />
-                               <input type="hidden" name="Score" value="@item.Score" />
-                               <input type="hidden" name="Start_Date" value="@item.Start_Date" />
-                               <input type="hidden" name="Status" value="@item.Status" />
-                               <input type="hidden" name="Synonyms" value="@item.Synonyms" />
-                               <input type="hidden" name="Synopsis" value="@item.Synopsis" />
-                               <input type="hidden" name="Title" value="@item.Title" />
-                               <input type="hidden" name="Type" value="@item.Type" />
-                               <input type="hidden" name="User_Status" value="@item.User_Status" />
-                               
-                               <input type="submit" value="Add" class="btn btn-info syn-btn" />  
-                           </form>*@
+                                    <p>@Html.DisplayFor(modelItem => item.Start_Date) - @Html.DisplayFor(modelItem => item.End_Date)</p>
 
-                            <form asp-controller="Animes" asp-action="Add" method="get">
-
-                                <input type="hidden" name="id" value="@i" />
-                                <input type="submit" value="Add" class="btn btn-info syn-btn" />
-                            </form>
-
-                        </td>
-                    </tr>
-                
+                                    <button type="button" class="btn btn-info syn-btn" data-toggle="collapse" data-target="#@item.ID">Synopsis</button>
+                                    <div id="@item.ID" class="collapse">
+                                        <p>@Html.Raw(@item.Synopsis)</p>
+                                    </div>
 
 
-                i++;
-            }
-        </tbody>
-    </table>
+                                </div>
+                            </td>
 
-</div>
+                            <td class="v-center">
+                                <p>@Html.DisplayFor(modelItem => item.Type) (@Html.DisplayFor(modelItem => item.Episodes) eps)</p>
+                            </td>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+                            <td class="v-center">
+                                @Html.DisplayFor(modelItem => item.Score)
+                            </td>
+
+                            <td class="v-center">
+                                @Html.DisplayFor(modelItem => item.Status)@*needs to have a conditional on what to display*@
+                            </td>
+                            <td class="v-center">
+
+                                @*<form asp-controller="Animes" asp-action="Search" method="post">
+
+                                        <input type="hidden" name="ID" value="@item.MALID"/>
+                                        <input type="hidden" name="End_Date" value="@item.End_Date" />
+                                        <input type="hidden" name="English" value="@item.English" />
+                                        <input type="hidden" name="Episodes" value="@item.Episodes" />
+                                        <input type="hidden" name="Image" value="@item.Image" />
+                                        <input type="hidden" name="Score" value="@item.Score" />
+                                        <input type="hidden" name="Start_Date" value="@item.Start_Date" />
+                                        <input type="hidden" name="Status" value="@item.Status" />
+                                        <input type="hidden" name="Synonyms" value="@item.Synonyms" />
+                                        <input type="hidden" name="Synopsis" value="@item.Synopsis" />
+                                        <input type="hidden" name="Title" value="@item.Title" />
+                                        <input type="hidden" name="Type" value="@item.Type" />
+                                        <input type="hidden" name="User_Status" value="@item.User_Status" />
+
+                                        <input type="submit" value="Add" class="btn btn-info syn-btn" />
+                                    </form>*@
+
+                                <form asp-controller="Animes" asp-action="Add" method="get">
+
+                                    <input type="hidden" name="id" value="@i" />
+                                    <input type="submit" value="Add" class="btn btn-info syn-btn" />
+                                </form>
+
+                            </td>
+                        </tr>
+
+
+
+                        i++;
+                    }
+                </tbody>
+            </table>
+                        }
+
+        
+
+    </div>
+  </div>
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }

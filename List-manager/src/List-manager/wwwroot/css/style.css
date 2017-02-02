@@ -52,3 +52,7 @@ th {
     vertical-align: middle !important;
 
 }
+
+.search-bar {
+    max-width:  100% !important;
+}
