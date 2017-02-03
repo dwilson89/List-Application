@@ -172,7 +172,12 @@ namespace List_manager.Controllers
             return _context.Anime.Any(e => e.MALID == id);
         }
 
-   
+
+        private bool AnimeExistsForUser(int animeId, string userId)
+        {
+            return _context.UserAnimes.Any(e => e.AnimeID == animeId && e.ApplicationUserId.Equals(userId));
+            
+        }
 
         [HttpPost]
         public IActionResult Search(Anime anime)
@@ -212,17 +217,27 @@ namespace List_manager.Controllers
             ViewData["return"] = returnUrl;
             if (ModelState.IsValid)
             {
+                int f_id = 0;
                 if(!AnimeExists(anime.MALID))
                 {
                     _context.Add(anime);
-                    //await _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync();
 
-                    //Add to the relational table for the user and the anime added
-                    int f_id = anime.ID;
-                    var user = await GetCurrentUserAsync();
-                    var userId = user?.Id;
+                    f_id = anime.ID;
+                } else
+                {
+                    f_id = _context.Anime.First(f => f.MALID == anime.MALID).ID;
+                }
 
-                    _context.UserAnimes.Add(new UserAnime { AnimeID = f_id, ApplicationUserId = userId});
+
+                //Add to the relational table for the user and the anime added
+                
+                var user = await GetCurrentUserAsync();
+                var userId = user?.Id;
+
+                if (!AnimeExistsForUser(f_id, userId))
+                {
+                    _context.UserAnimes.Add(new UserAnime { AnimeID = f_id, ApplicationUserId = userId });
                     await _context.SaveChangesAsync();
                 }
 
@@ -241,9 +256,6 @@ namespace List_manager.Controllers
             //string password = claims["Secret"]
             
             var malCookiesAuth = HttpContext.Authentication.GetAuthenticateInfoAsync("MALCookie");
-
-
-          
 
             if (malCookiesAuth.Result.Description.AuthenticationScheme == null)
             {

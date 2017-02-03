@@ -61,12 +61,7 @@ namespace List_manager.Models
 
         //public string Genres { get; set; }
 
-        public ICollection<UserAnime> UserAnime { get; set; }
-
-        public override bool Equals(object obj)
-        {
-            return base.Equals(obj);
-        }
+        //public ICollection<UserAnime> UserAnime { get; set; }
 
     }
 }
