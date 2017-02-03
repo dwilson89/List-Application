@@ -23,20 +23,18 @@
 
 </div>
 
-<div class="container body-content">
+
     <div class="container-fluid bg-2">
 
         @if (Model.EntryList.Count != 0)
         {
-            <table class="table table-bordered table-striped text-center">
+            <table class="table table-bordered table-striped text-center table-responsive container-fluid">
                 <tr>
 
                     <th>
                         Title
                     </th>
-                    <th>
-                        Type
-                    </th>
+                    
                     <th>
                         Score
                     </th>
@@ -52,14 +50,14 @@
 
 
                         <tr>
-                            <td class="title-desc col-md-8">
+                            <td class="title-desc col-md-7">
 
-                                <div class="col-md-2">
+                                <div class="col-sm-2">
                                     <input type="hidden" asp-for="@item.Image" />
                                     <img src="@Url.Content(@item.Image)" class="img-responsive">
                                 </div>
 
-                                <div class="col-md-10">
+                                <div class="col-sm-10">
                                     <a href="@Url.Content(@item.GetLink())">@Html.DisplayFor(modelItem => item.Title)</a>
 
                                     @if (!String.IsNullOrEmpty(@item.English))
@@ -72,22 +70,13 @@
                                     {
                                         <p>Syn: @Html.DisplayFor(modelItem => item.Synonyms)</p>
                                     }
-
+                                    <p>Type: @Html.DisplayFor(modelItem => item.Type) (@Html.DisplayFor(modelItem => item.Episodes) eps)</p>
                                     <p>@Html.DisplayFor(modelItem => item.Start_Date) - @Html.DisplayFor(modelItem => item.End_Date)</p>
-
-                                    <button type="button" class="btn btn-info syn-btn" data-toggle="collapse" data-target="#@item.ID">Synopsis</button>
-                                    <div id="@item.ID" class="collapse">
-                                        <p>@Html.Raw(@item.Synopsis)</p>
-                                    </div>
-
 
                                 </div>
                             </td>
 
-                            <td class="v-center">
-                                <p>@Html.DisplayFor(modelItem => item.Type) (@Html.DisplayFor(modelItem => item.Episodes) eps)</p>
-                            </td>
-
+                            
                             <td class="v-center">
                                 @Html.DisplayFor(modelItem => item.Score)
                             </td>
@@ -136,7 +125,7 @@
         
 
     </div>
-  </div>
+
     @section Scripts {
         @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     }

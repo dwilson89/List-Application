@@ -4,104 +4,98 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
+<h2>Anime List</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Search">Add to list</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.MALID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.End_Date)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.English)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Episodes)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Image)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Score)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Start_Date)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Synonyms)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Synopsis)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Type)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.User_Status)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.MALID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.End_Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.English)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Episodes)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Image)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Score)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Start_Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Synonyms)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Synopsis)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Type)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User_Status)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
+    <div class="container-fluid bg-2">
+
+        @if (Model.Count<Anime>() != 0)
+        {
+            <table class="table table-bordered table-striped text-center table-responsive">
+                <tr>
+
+                    <th>
+                        Title
+                    </th>
+                   
+                    <th>
+                        Score
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th>
+                        User Status
+                    </th>
+                </tr>
+
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+
+
+                        <tr>
+                            <td class="title-desc col-md-7">
+
+                                <div class="col-sm-2">
+                                    <input type="hidden" asp-for="@item.Image" />
+                                    <img src="@Url.Content(@item.Image)" class="img-responsive">
+                                </div>
+
+                                <div class="col-sm-10">
+                                    <a href="@Url.Content(@item.GetLink())">@Html.DisplayFor(modelItem => item.Title)</a>
+
+                                    @if (!String.IsNullOrEmpty(@item.English))
+                                    {
+
+                                        <p>Eng: @Html.DisplayFor(modelItem => item.English)</p>
+                                    }
+
+                                    @if (!String.IsNullOrEmpty(@item.Synonyms))
+                                    {
+                                        <p>Syn: @Html.DisplayFor(modelItem => item.Synonyms)</p>
+                                    }
+
+                                    <p>Type: @Html.DisplayFor(modelItem => item.Type) (@Html.DisplayFor(modelItem => item.Episodes) eps)</p>
+                                    <p>@Html.DisplayFor(modelItem => item.Start_Date) - @Html.DisplayFor(modelItem => item.End_Date)</p>
+
+
+                                    <button type="button" class="btn btn-info syn-btn" data-toggle="collapse" data-target="#@item.ID">Synopsis</button>
+                                    <div id="@item.ID" class="collapse">
+                                        <p>@Html.Raw(@item.Synopsis)</p>
+                                    </div>
+
+
+                                </div>
+                            </td>
+
+
+                            <td class="v-center">
+                                @Html.DisplayFor(modelItem => item.Score)
+                            </td>
+
+                            <td class="v-center">
+                                @Html.DisplayFor(modelItem => item.Status)@*needs to have a conditional on what to display*@
+                            </td>
+
+                            <td class="v-center">
+                                @Html.DisplayFor(modelItem => item.User_Status)
+                            </td>
+
+                            <td class="v-center">
+                                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                            </td>
+                        </tr>
+
+                    }
+                </tbody>
+            </table>
+      }
+        </div>
+
