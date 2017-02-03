@@ -37,8 +37,16 @@ namespace List_manager.Controllers
         // GET: Animes
         public async Task<IActionResult> Index()
         {
-            
-            return View(await _context.Anime.ToListAsync());
+
+            var user = await GetCurrentUserAsync();
+            var userId = user?.Id;
+
+            var anime = _context.UserAnimes.Where(d =>d.ApplicationUserId == userId).Include(d => d.Anime).Select(s => s.Anime);
+
+            //var appuser = await _context.Users.Include(s => s.UserAnimes).ThenInclude(e => e.Anime).AsNoTracking().SingleOrDefaultAsync();
+
+            return View(await anime.ToListAsync());
+           
         }
 
         // GET: Animes/Details/5
@@ -161,7 +169,7 @@ namespace List_manager.Controllers
 
         private bool AnimeExists(int id)
         {
-            return _context.Anime.Any(e => e.ID == id);
+            return _context.Anime.Any(e => e.MALID == id);
         }
 
    
@@ -204,8 +212,20 @@ namespace List_manager.Controllers
             ViewData["return"] = returnUrl;
             if (ModelState.IsValid)
             {
-                _context.Add(anime);
-                await _context.SaveChangesAsync();
+                if(!AnimeExists(anime.MALID))
+                {
+                    _context.Add(anime);
+                    //await _context.SaveChangesAsync();
+
+                    //Add to the relational table for the user and the anime added
+                    int f_id = anime.ID;
+                    var user = await GetCurrentUserAsync();
+                    var userId = user?.Id;
+
+                    _context.UserAnimes.Add(new UserAnime { AnimeID = f_id, ApplicationUserId = userId});
+                    await _context.SaveChangesAsync();
+                }
+
                 return Redirect(returnUrl);
             }
             return View(anime);

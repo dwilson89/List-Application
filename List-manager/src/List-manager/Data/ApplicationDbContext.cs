@@ -21,8 +21,12 @@ namespace List_manager.Data
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
+            builder.Entity<UserAnime>().ToTable("UserAnime");
         }
 
         public DbSet<Anime> Anime { get; set; }
+        
+        public DbSet<UserAnime> UserAnimes { get; set; }
+
     }
 }

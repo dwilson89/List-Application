@@ -243,12 +243,14 @@ C:\Users\Dustin\Documents\Visual Studio 2015\Projects\MvcMovie\List-Application\
 C:\Users\Dustin\Documents\Visual Studio 2015\Projects\MvcMovie\List-Application\List-manager\src\List-manager\Data\Migrations\20170124100417_Initial.Designer.cs
 C:\Users\Dustin\Documents\Visual Studio 2015\Projects\MvcMovie\List-Application\List-manager\src\List-manager\Data\Migrations\ApplicationDbContextModelSnapshot.cs
 C:\Users\Dustin\Documents\Visual Studio 2015\Projects\MvcMovie\List-Application\List-manager\src\List-manager\Models\Anime.cs
+C:\Users\Dustin\Documents\Visual Studio 2015\Projects\MvcMovie\List-Application\List-manager\src\List-manager\Models\AnimeCompare.cs
 C:\Users\Dustin\Documents\Visual Studio 2015\Projects\MvcMovie\List-Application\List-manager\src\List-manager\Models\AnimeList.cs
 C:\Users\Dustin\Documents\Visual Studio 2015\Projects\MvcMovie\List-Application\List-manager\src\List-manager\Models\ApplicationUser.cs
 C:\Users\Dustin\Documents\Visual Studio 2015\Projects\MvcMovie\List-Application\List-manager\src\List-manager\Models\MALUser.cs
 C:\Users\Dustin\Documents\Visual Studio 2015\Projects\MvcMovie\List-Application\List-manager\src\List-manager\Models\MALUserAnime.cs
 C:\Users\Dustin\Documents\Visual Studio 2015\Projects\MvcMovie\List-Application\List-manager\src\List-manager\Models\MALUserInfo.cs
 C:\Users\Dustin\Documents\Visual Studio 2015\Projects\MvcMovie\List-Application\List-manager\src\List-manager\Models\MALUserList.cs
+C:\Users\Dustin\Documents\Visual Studio 2015\Projects\MvcMovie\List-Application\List-manager\src\List-manager\Models\UserAnime.cs
 C:\Users\Dustin\Documents\Visual Studio 2015\Projects\MvcMovie\List-Application\List-manager\src\List-manager\Models\UserAnimeData.cs
 C:\Users\Dustin\Documents\Visual Studio 2015\Projects\MvcMovie\List-Application\List-manager\src\List-manager\Models\AccountViewModels\ExternalLoginConfirmationViewModel.cs
 C:\Users\Dustin\Documents\Visual Studio 2015\Projects\MvcMovie\List-Application\List-manager\src\List-manager\Models\AccountViewModels\ForgotPasswordViewModel.cs

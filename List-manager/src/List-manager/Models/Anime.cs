@@ -58,7 +58,15 @@ namespace List_manager.Models
         private DateTime updated_date;
 
         //private bool isInitialized;
-        
-         //public string Genres { get; set; }
+
+        //public string Genres { get; set; }
+
+        public ICollection<UserAnime> UserAnime { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return base.Equals(obj);
+        }
+
     }
 }

@@ -15,7 +15,7 @@ namespace List_manager.Data.Migrations
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    DBID = table.Column<int>(nullable: false),
+                    MALID = table.Column<int>(nullable: false),
                     End_Date = table.Column<string>(nullable: true),
                     English = table.Column<string>(nullable: true),
                     Episodes = table.Column<int>(nullable: false),
