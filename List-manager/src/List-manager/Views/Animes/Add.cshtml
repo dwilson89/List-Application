@@ -5,89 +5,89 @@
 }
 
 <div>
-    <h3>@Html.DisplayFor(model => model.Title) (@Html.DisplayFor(modelItem => modelItem.Start_Date) - @Html.DisplayFor(modelItem => modelItem.End_Date))</h3>
-    
-    
+    <div>
+        <h3>@Html.DisplayFor(model => model.Title) </h3>
+        <h5>
+        <i>@Html.DisplayFor(modelItem => modelItem.Start_Date) -
+        @Html.DisplayFor(modelItem => modelItem.End_Date)</i>
+        </h5>
+</div>
+    <span class="label label-info lb-md">MALID: @Html.DisplayFor(model => model.MALID)</span>
+    <span class="label label-info lb-md">@Html.DisplayFor(model => model.Status)</span>
+    <span class="label label-info lb-md">@Html.DisplayFor(modelItem => modelItem.Type)</span>
+    <span class="label label-info lb-md">@Html.DisplayFor(modelItem => modelItem.Episodes) Episodes</span>
     <hr />
 
-    <div class="container col-md-3">
-        <img src="@Url.Content(Model.Image)" class="img-responsive">
-    </div>
+    <div class="row">
 
+        <div class="container col-md-3">
+            <img src="@Url.Content(Model.Image)" class="img-responsive">
 
-    <div class="container col-md-9">
-        <h4>Alternative Titles</h4>
+            <div>
+                <h4>Edit Status</h4>
+                <form asp-action="Add">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <select asp-for="User_Status" class="form-control" style="width:90%;">
+                        <option value="On Hold">On Hold</option>
+                        <option value="Plan to watch">Plan to watch</option>
+                    </select>
 
-        @if (!String.IsNullOrEmpty(@Model.English))
-        {
+                    <input type="hidden" asp-for="MALID" />
+                    <input type="hidden" asp-for="End_Date" />
+                    <input type="hidden" asp-for="English" />
+                    <input type="hidden" asp-for="Episodes" />
+                    <input type="hidden" asp-for="Image" />
+                    <input type="hidden" asp-for="Score" />
+                    <input type="hidden" asp-for="Start_Date" />
+                    <input type="hidden" asp-for="Status" />
+                    <input type="hidden" asp-for="Synonyms" />
+                    <input type="hidden" asp-for="Synopsis" />
+                    <input type="hidden" asp-for="Title" />
+                    <input type="hidden" asp-for="Type" />
 
-            <p>English: @Html.DisplayFor(modelItem => modelItem.English)</p>
-        }
+                    <input type="hidden" name="returnUrl" value="@ViewData["returnUrl"]" />
+                    <input type="submit" value="Add" class="btn btn-default" />
+                </form>
 
-        @if (!String.IsNullOrEmpty(@Model.Synonyms))
-        {
-            <p>Synonym: @Html.DisplayFor(modelItem => modelItem.Synonyms)</p>
-        }
+            </div>
 
+            <hr />
 
-        <hr />
-
-        <ul class="list-inline">
-
-            <li class="list-group-item">
-                <p>MALID: @Html.DisplayFor(model => model.MALID)</p>
-            </li>
-
-            <li class="list-group-item">
-                <p>@Html.DisplayFor(modelItem => modelItem.Type) (@Html.DisplayFor(modelItem => modelItem.Episodes) eps)</p>
-            </li>
-            <li class="list-group-item">
-                <p>@Html.DisplayFor(model => model.Status)</p>
-            </li>
-
-        </ul>
-
-        <hr />
-
-
-        <div>
-            <p>Score: @Html.DisplayFor(model => model.Score) / 10</p>
         </div>
 
-        <hr />
 
-        <div>
-            <h4>@Html.DisplayNameFor(model => model.Synopsis)</h4>
-            <p>@Html.Raw(Model.Synopsis)</p>
+        <div class="container col-md-9">
+            <h4>Alternative Titles</h4>
+
+            @if (!String.IsNullOrEmpty(@Model.English))
+            {
+
+                <p><b>English:</b> @Html.DisplayFor(modelItem => modelItem.English)</p>
+            }
+
+            @if (!String.IsNullOrEmpty(@Model.Synonyms))
+            {
+                <p><b>Synonym:</b> @Html.DisplayFor(modelItem => modelItem.Synonyms)</p>
+            }
+
+
+            <hr />
+
+
+            <div>
+                <p>Score: @Html.DisplayFor(model => model.Score) / 10</p>
+            </div>
+
+            <hr />
+
+            <div>
+                <h4>@Html.DisplayNameFor(model => model.Synopsis)</h4>
+                <p>@Html.Raw(Model.Synopsis)</p>
+            </div>
         </div>
     </div>
 
-    <form asp-action="Add">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <select asp-for="User_Status" class="form-control">
-            <option value="On Hold">On Hold</option>
-            <option value="Plan to watch">Plan to watch</option>
-        </select>
-
-        <input type="hidden" asp-for="MALID" />
-        <input type="hidden" asp-for="End_Date" />
-        <input type="hidden" asp-for="English" />
-        <input type="hidden" asp-for="Episodes" />
-        <input type="hidden" asp-for="Image" />
-        <input type="hidden" asp-for="Score" />
-        <input type="hidden" asp-for="Start_Date" />
-        <input type="hidden" asp-for="Status" />
-        <input type="hidden" asp-for="Synonyms" />
-        <input type="hidden" asp-for="Synopsis" />
-        <input type="hidden" asp-for="Title" />
-        <input type="hidden" asp-for="Type" />
-
-        <input type="hidden" name="returnUrl" value="@ViewData["returnUrl"]" />
-        <input type="submit" value="Add" class="btn btn-default" />
-    </form>
-
-
-</div>
-<div>
-    <a href="@ViewData["returnUrl"]">Back to List</a>
-</div>
+    </div>
+    <div>
+        <a href="@ViewData["returnUrl"]">Back to List</a>
+    </div>
