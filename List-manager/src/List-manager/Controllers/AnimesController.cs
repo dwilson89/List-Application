@@ -43,7 +43,9 @@ namespace List_manager.Controllers
 
             var anime = _context.UserAnimes.Where(d =>d.ApplicationUserId == userId).Include(d => d.Anime).Select(s => s.Anime);
 
-            //var appuser = await _context.Users.Include(s => s.UserAnimes).ThenInclude(e => e.Anime).AsNoTracking().SingleOrDefaultAsync();
+            //Alternative method, needs a bit more manipulation though
+            //var appuser = await _context.Users.Include(s => s.UserAnime).ThenInclude(e => e.Anime).AsNoTracking().SingleOrDefaultAsync(m => m.Id == userId);
+            
 
             return View(await anime.ToListAsync());
            
@@ -186,6 +188,9 @@ namespace List_manager.Controllers
             return View("Add", anime);
         }
 
+
+
+
         //Might not be proper to rely on a cache, however given the nature for the time being this will do
         public IActionResult Add(int id)
         {
@@ -266,12 +271,6 @@ namespace List_manager.Controllers
             var claims = malCookiesAuth.Result.Principal.Claims;
             string userName = claims.First(p => p.Type == "Username").Value;
             string password = claims.First(p => p.Type == "Secret").Value;
-
-
-            var defaultAuth = HttpContext.Authentication.GetAuthenticateInfoAsync("Default");
-
-            //var user = await GetCurrentUserAsync();
-            //var userId = user?.Id;
 
             Models.AnimeList list = new Models.AnimeList();
             if (!String.IsNullOrEmpty(searchString))

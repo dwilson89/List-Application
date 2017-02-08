@@ -4,11 +4,63 @@
     ViewData["Title"] = "Add";
 }
 
-<h2>Add</h2>
-
 <div>
-    <h4>Anime</h4>
+    <h3>@Html.DisplayFor(model => model.Title) (@Html.DisplayFor(modelItem => modelItem.Start_Date) - @Html.DisplayFor(modelItem => modelItem.End_Date))</h3>
+    
+    
     <hr />
+
+    <div class="container col-md-3">
+        <img src="@Url.Content(Model.Image)" class="img-responsive">
+    </div>
+
+
+    <div class="container col-md-9">
+        <h4>Alternative Titles</h4>
+
+        @if (!String.IsNullOrEmpty(@Model.English))
+        {
+
+            <p>English: @Html.DisplayFor(modelItem => modelItem.English)</p>
+        }
+
+        @if (!String.IsNullOrEmpty(@Model.Synonyms))
+        {
+            <p>Synonym: @Html.DisplayFor(modelItem => modelItem.Synonyms)</p>
+        }
+
+
+        <hr />
+
+        <ul class="list-inline">
+
+            <li class="list-group-item">
+                <p>MALID: @Html.DisplayFor(model => model.MALID)</p>
+            </li>
+
+            <li class="list-group-item">
+                <p>@Html.DisplayFor(modelItem => modelItem.Type) (@Html.DisplayFor(modelItem => modelItem.Episodes) eps)</p>
+            </li>
+            <li class="list-group-item">
+                <p>@Html.DisplayFor(model => model.Status)</p>
+            </li>
+
+        </ul>
+
+        <hr />
+
+
+        <div>
+            <p>Score: @Html.DisplayFor(model => model.Score) / 10</p>
+        </div>
+
+        <hr />
+
+        <div>
+            <h4>@Html.DisplayNameFor(model => model.Synopsis)</h4>
+            <p>@Html.Raw(Model.Synopsis)</p>
+        </div>
+    </div>
 
     <form asp-action="Add">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -17,13 +69,13 @@
             <option value="Plan to watch">Plan to watch</option>
         </select>
 
-        <input type="hidden" asp-for="MALID"/>
-        <input type="hidden" asp-for="End_Date"/>
-        <input type="hidden" asp-for="English"/>
-        <input type="hidden" asp-for="Episodes"/>
+        <input type="hidden" asp-for="MALID" />
+        <input type="hidden" asp-for="End_Date" />
+        <input type="hidden" asp-for="English" />
+        <input type="hidden" asp-for="Episodes" />
         <input type="hidden" asp-for="Image" />
         <input type="hidden" asp-for="Score" />
-        <input type="hidden" asp-for="Start_Date"/>
+        <input type="hidden" asp-for="Start_Date" />
         <input type="hidden" asp-for="Status" />
         <input type="hidden" asp-for="Synonyms" />
         <input type="hidden" asp-for="Synopsis" />
@@ -34,85 +86,7 @@
         <input type="submit" value="Add" class="btn btn-default" />
     </form>
 
-    <dl class="dl-horizontal">
-        
-        <dt>
-            @Html.DisplayNameFor(model => model.MALID)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.MALID)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.English)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.English)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Synonyms)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Synonyms)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Episodes)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Episodes)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Score)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Score)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Type)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Type)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Start_Date)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Start_Date)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.End_Date)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.End_Date)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Synopsis)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Synopsis)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Image)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Image)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.User_Status)
-        </dt>
-        
-    </dl>
+
 </div>
 <div>
     <a href="@ViewData["returnUrl"]">Back to List</a>
