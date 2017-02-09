@@ -237,6 +237,8 @@
 "C:\Users\Dustin\Documents\Visual Studio 2015\Projects\MvcMovie\List-Application\List-manager\src\List-manager\Data\Migrations\00000000000000_CreateIdentitySchema.Designer.cs"
 "C:\Users\Dustin\Documents\Visual Studio 2015\Projects\MvcMovie\List-Application\List-manager\src\List-manager\Data\Migrations\20170124100417_Initial.cs"
 "C:\Users\Dustin\Documents\Visual Studio 2015\Projects\MvcMovie\List-Application\List-manager\src\List-manager\Data\Migrations\20170124100417_Initial.Designer.cs"
+"C:\Users\Dustin\Documents\Visual Studio 2015\Projects\MvcMovie\List-Application\List-manager\src\List-manager\Data\Migrations\20170209085115_User_Status.cs"
+"C:\Users\Dustin\Documents\Visual Studio 2015\Projects\MvcMovie\List-Application\List-manager\src\List-manager\Data\Migrations\20170209085115_User_Status.Designer.cs"
 "C:\Users\Dustin\Documents\Visual Studio 2015\Projects\MvcMovie\List-Application\List-manager\src\List-manager\Data\Migrations\ApplicationDbContextModelSnapshot.cs"
 "C:\Users\Dustin\Documents\Visual Studio 2015\Projects\MvcMovie\List-Application\List-manager\src\List-manager\Models\Anime.cs"
 "C:\Users\Dustin\Documents\Visual Studio 2015\Projects\MvcMovie\List-Application\List-manager\src\List-manager\Models\AnimeCompare.cs"

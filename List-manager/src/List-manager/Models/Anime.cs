@@ -10,12 +10,6 @@ namespace List_manager.Models
 {
     public class Anime
     {
-        //private static int dbId = 1;
-
-        public Anime()
-        {
-            User_Status = "Plan to watch";
-        }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
@@ -53,7 +47,7 @@ namespace List_manager.Models
             return $"https://myanimelist.net/anime/{MALID}/{Title.Replace(" ", "_")}";
         }  
 
-        public string User_Status { get; set; }
+        //public string User_Status { get; set; }
 
         private DateTime updated_date;
 

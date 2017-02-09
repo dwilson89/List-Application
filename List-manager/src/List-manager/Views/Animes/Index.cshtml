@@ -1,4 +1,4 @@
-@model IEnumerable<List_manager.Models.Anime>
+@model IEnumerable<List_manager.Models.UserAnime>
 
 @{
     ViewData["Title"] = "Index";
@@ -12,7 +12,7 @@
 
     <div class="container-fluid bg-2">
 
-        @if (Model.Count<Anime>() != 0)
+        @if (Model.Count<UserAnime>() != 0)
         {
             <table class="table table-bordered table-striped text-center table-responsive">
                 <tr>
@@ -42,31 +42,31 @@
                             <td class="title-desc col-md-7">
 
                                 <div class="col-sm-2">
-                                    <input type="hidden" asp-for="@item.Image" />
-                                    <img src="@Url.Content(@item.Image)" class="img-responsive">
+                                    <input type="hidden" asp-for="@item.Anime.Image" />
+                                    <img src="@Url.Content(@item.Anime.Image)" class="img-responsive">
                                 </div>
 
                                 <div class="col-sm-10">
-                                    <a href="@Url.Content(@item.GetLink())">@Html.DisplayFor(modelItem => item.Title)</a>
+                                    <a href="@Url.Content(@item.Anime.GetLink())">@Html.DisplayFor(modelItem => item.Anime.Title)</a>
 
-                                    @if (!String.IsNullOrEmpty(@item.English))
+                                    @if (!String.IsNullOrEmpty(@item.Anime.English))
                                     {
 
-                                        <p>Eng: @Html.DisplayFor(modelItem => item.English)</p>
+                                        <p>Eng: @Html.DisplayFor(modelItem => item.Anime.English)</p>
                                     }
 
-                                    @if (!String.IsNullOrEmpty(@item.Synonyms))
+                                    @if (!String.IsNullOrEmpty(@item.Anime.Synonyms))
                                     {
-                                        <p>Syn: @Html.DisplayFor(modelItem => item.Synonyms)</p>
+                                        <p>Syn: @Html.DisplayFor(modelItem => item.Anime.Synonyms)</p>
                                     }
 
-                                    <p>Type: @Html.DisplayFor(modelItem => item.Type) (@Html.DisplayFor(modelItem => item.Episodes) eps)</p>
-                                    <p>@item.GetStartDateNiceFormat() - @item.GetEndDateNiceFormat()</p>
+                                    <p>Type: @Html.DisplayFor(modelItem => item.Anime.Type) (@Html.DisplayFor(modelItem => item.Anime.Episodes) eps)</p>
+                                    <p>@item.Anime.GetStartDateNiceFormat() - @item.Anime.GetEndDateNiceFormat()</p>
 
 
-                                    <button type="button" class="btn btn-info syn-btn" data-toggle="collapse" data-target="#@item.ID">Synopsis</button>
-                                    <div id="@item.ID" class="collapse">
-                                        <p>@Html.Raw(@item.Synopsis)</p>
+                                    <button type="button" class="btn btn-info syn-btn" data-toggle="collapse" data-target="#@item.Anime.ID">Synopsis</button>
+                                    <div id="@item.Anime.ID" class="collapse">
+                                        <p>@Html.Raw(@item.Anime.Synopsis)</p>
                                     </div>
 
 
@@ -75,11 +75,11 @@
 
 
                             <td class="v-center">
-                                @Html.DisplayFor(modelItem => item.Score)
+                                @Html.DisplayFor(modelItem => item.Anime.Score)
                             </td>
 
                             <td class="v-center">
-                                @Html.DisplayFor(modelItem => item.Status)@*needs to have a conditional on what to display*@
+                                @Html.DisplayFor(modelItem => item.Anime.Status)@*needs to have a conditional on what to display*@
                             </td>
 
                             <td class="v-center">
@@ -88,8 +88,8 @@
 
                             <td class="v-center">
                                 @*<a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |*@
-                                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                                <a asp-action="Details" asp-route-id="@item.Anime.ID">Details</a> |
+                                <a asp-action="Delete" asp-route-id="@item.Anime.ID">Delete</a>
                             </td>
                         </tr>
 

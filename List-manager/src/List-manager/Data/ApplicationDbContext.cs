@@ -22,6 +22,7 @@ namespace List_manager.Data
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
             builder.Entity<UserAnime>().ToTable("UserAnime");
+            builder.Entity<Anime>().ToTable("Anime");
         }
 
         public DbSet<Anime> Anime { get; set; }

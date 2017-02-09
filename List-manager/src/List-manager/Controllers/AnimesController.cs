@@ -43,11 +43,12 @@ namespace List_manager.Controllers
 
             var anime = _context.UserAnimes.Where(d =>d.ApplicationUserId == userId).Include(d => d.Anime).Select(s => s.Anime);
 
-            //Alternative method, needs a bit more manipulation though
-            //var appuser = await _context.Users.Include(s => s.UserAnime).ThenInclude(e => e.Anime).AsNoTracking().SingleOrDefaultAsync(m => m.Id == userId);
-            
+            var anime2 = _context.UserAnimes.Where(d => d.ApplicationUserId == userId).Include(d => d.Anime);
 
-            return View(await anime.ToListAsync());
+            //Alternative method, needs a bit more manipulation though
+            var appuser = await _context.Users.Include(s => s.UserAnime).ThenInclude(e => e.Anime).AsNoTracking().SingleOrDefaultAsync(m => m.Id == userId);
+
+            return View(await anime2.ToListAsync());
            
         }
 
@@ -79,7 +80,7 @@ namespace List_manager.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MALID,End_Date,English,Episodes,Image,Score,Start_Date,Status,Synonyms,Synopsis,Title,Type,User_Status")] Anime anime)
+        public async Task<IActionResult> Create([Bind("MALID,End_Date,English,Episodes,Image,Score,Start_Date,Status,Synonyms,Synopsis,Title,Type")] Anime anime)
         {
             if (ModelState.IsValid)
             {
@@ -111,7 +112,7 @@ namespace List_manager.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MALID,End_Date,English,Episodes,Image,Score,Start_Date,Status,Synonyms,Synopsis,Title,Type,User_Status")] Anime anime)
+        public async Task<IActionResult> Edit(int id, [Bind("MALID,End_Date,English,Episodes,Image,Score,Start_Date,Status,Synonyms,Synopsis,Title,Type")] Anime anime)
         {
             if (id != anime.ID)
             {
@@ -217,7 +218,7 @@ namespace List_manager.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost, ActionName("Add")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddToDB([Bind("MALID,End_Date,English,Episodes,Image,Score,Start_Date,Status,Synonyms,Synopsis,Title,Type,User_Status")]Anime anime, string returnUrl = null)
+        public async Task<IActionResult> AddToDB([Bind("MALID,End_Date,English,Episodes,Image,Score,Start_Date,Status,Synonyms,Synopsis,Title,Type")]Anime anime,string user_status, string returnUrl = null)
         {
             ViewData["return"] = returnUrl;
             if (ModelState.IsValid)
@@ -242,7 +243,7 @@ namespace List_manager.Controllers
 
                 if (!AnimeExistsForUser(f_id, userId))
                 {
-                    _context.UserAnimes.Add(new UserAnime { AnimeID = f_id, ApplicationUserId = userId });
+                    _context.UserAnimes.Add(new UserAnime { AnimeID = f_id, ApplicationUserId = userId, User_Status = user_status });
                     await _context.SaveChangesAsync();
                 }
 
