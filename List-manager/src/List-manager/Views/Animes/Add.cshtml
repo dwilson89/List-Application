@@ -3,6 +3,10 @@
 @{
     ViewData["Title"] = "Add";
 }
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+<script>
+    $('head').append('<style>#rating::after{width:@(Model.Score * 10)%}</style>');
+</script>
 
 <div>
     <div>
@@ -77,8 +81,13 @@
 
 
             <div>
-                <p>Score: @Html.DisplayFor(model => model.Score) / 10</p>
-            </div>
+                <h4>MAL Score </h4>
+
+                <div id="rating" class="star-rating" data-></div> 
+                <div class="mal-score"><span id="score">@Html.DisplayFor(model => model.Score)</span> /10</div>
+
+                    
+
 
             <hr />
 

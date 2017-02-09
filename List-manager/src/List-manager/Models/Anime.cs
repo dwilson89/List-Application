@@ -47,12 +47,11 @@ namespace List_manager.Models
             return $"https://myanimelist.net/anime/{MALID}/{Title.Replace(" ", "_")}";
         }  
 
-        //public string User_Status { get; set; }
+       
 
-        private DateTime updated_date;
+        //public DateTime Updated_Date { get; set; }
 
-        //private bool isInitialized;
-
+       
         //public string Genres { get; set; }
 
         //public ICollection<UserAnime> UserAnime { get; set; }
