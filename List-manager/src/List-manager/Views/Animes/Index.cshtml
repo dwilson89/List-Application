@@ -61,7 +61,7 @@
                                     }
 
                                     <p>Type: @Html.DisplayFor(modelItem => item.Type) (@Html.DisplayFor(modelItem => item.Episodes) eps)</p>
-                                    <p>@Html.DisplayFor(modelItem => item.Start_Date) - @Html.DisplayFor(modelItem => item.End_Date)</p>
+                                    <p>@item.GetStartDateNiceFormat() - @item.GetEndDateNiceFormat()</p>
 
 
                                     <button type="button" class="btn btn-info syn-btn" data-toggle="collapse" data-target="#@item.ID">Synopsis</button>
@@ -87,7 +87,7 @@
                             </td>
 
                             <td class="v-center">
-                                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                                @*<a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |*@
                                 <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
                                 <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
                             </td>

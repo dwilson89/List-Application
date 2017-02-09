@@ -8,8 +8,8 @@
     <div>
         <h3>@Html.DisplayFor(model => model.Title) </h3>
         <h5>
-        <i>@Html.DisplayFor(modelItem => modelItem.Start_Date) -
-        @Html.DisplayFor(modelItem => modelItem.End_Date)</i>
+        <i>@Model.GetStartDateNiceFormat() -
+        @Model.GetEndDateNiceFormat()</i>
         </h5>
 </div>
     <span class="label label-info lb-md">MALID: @Html.DisplayFor(model => model.MALID)</span>
@@ -30,6 +30,8 @@
                     <select asp-for="User_Status" class="form-control" style="width:90%;">
                         <option value="On Hold">On Hold</option>
                         <option value="Plan to watch">Plan to watch</option>
+                        <option value="Plan to watch">Downloading</option>
+                        <option value="Plan to watch">Completed</option>
                     </select>
 
                     <input type="hidden" asp-for="MALID" />
@@ -89,5 +91,6 @@
 
     </div>
     <div>
-        <a href="@ViewData["returnUrl"]">Back to List</a>
+        <a href="@ViewData["returnUrl"]">Back to List</a> |
+        <a href="@Model.GetLink()" target="_blank">Go to MAL Webpage</a>
     </div>

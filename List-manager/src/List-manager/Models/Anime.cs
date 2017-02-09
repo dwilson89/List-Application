@@ -63,5 +63,56 @@ namespace List_manager.Models
 
         //public ICollection<UserAnime> UserAnime { get; set; }
 
+        /*Date Formating Functionality*/
+
+        public string GetStartDateNiceFormat()
+        {
+            return dateFormat(Start_Date);
+        }
+
+        public string GetEndDateNiceFormat()
+        {
+            return dateFormat(End_Date); 
+        }
+
+        private string dateFormat(string date)
+        {
+            string returnStr = "";
+            DateTime temp;
+            string format = "dd MMMM yyyy";
+
+            try
+            {
+
+                //do the conversion in here
+                if (date.Equals("0000-00-00"))
+                {
+                    return "Still Airing";
+                }
+                else if (date.EndsWith("00")) // Some may not have a day associated 
+                {
+                    temp = DateTime.ParseExact(date.Substring(0, date.Length - 2) + "01", "yyyy-MM-dd", null);
+                    format = "MMMM yyyy";
+                }
+                else
+                {
+                    temp = Convert.ToDateTime(date);
+                }
+
+                returnStr = temp.ToString(format);
+
+            } catch (FormatException ex)
+            {
+                //something hasnt been accounted for
+                //log issue
+
+                returnStr = "Unknown";
+
+            } 
+
+            return returnStr;
+        }
+
     }
+
 }
