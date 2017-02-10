@@ -1,14 +1,8 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using List_manager.Models;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
-using System.Net.Http;
-using System.Text;
-using System.Net.Http.Headers;
 
 namespace List_manager.Controllers
 {
