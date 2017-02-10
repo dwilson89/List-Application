@@ -129,7 +129,7 @@ namespace List_manager
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Animes}/{action=Index}/{id?}");
+                    template: "{controller=UserAnime}/{action=Index}/{id?}");
             });
         }
     }

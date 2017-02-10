@@ -1,0 +1,101 @@
+@model IEnumerable<List_manager.Models.UserAnime>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Anime List</h2>
+
+<p>
+    <a asp-action="Search">Add to list</a>
+</p>
+
+<div class="container-fluid bg-2">
+
+    @if (Model.Count<UserAnime>() != 0)
+    {
+        <table class="table table-bordered table-striped text-center table-responsive">
+            <tr>
+
+                <th>
+                    @Html.DisplayNameFor(modelItem => modelItem.Anime.Title)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(modelItem => modelItem.Anime.Score)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(modelItem => modelItem.Anime.Status)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(modelItem => modelItem.User_Status)
+                </th>
+            </tr>
+
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+
+
+                    <tr>
+                        <td class="title-desc col-md-7">
+
+                            <div class="col-sm-2">
+                                <input type="hidden" asp-for="@item.Anime.Image" />
+                                <img src="@Url.Content(@item.Anime.Image)" class="img-responsive">
+                            </div>
+
+                            <div class="col-sm-10">
+                                <a href="@Url.Content(@item.Anime.GetLink())">@Html.DisplayFor(modelItem => item.Anime.Title)</a>
+
+                                @if (!String.IsNullOrEmpty(@item.Anime.English))
+                                {
+
+                                    <p>Eng: @Html.DisplayFor(modelItem => item.Anime.English)</p>
+                                }
+
+                                @if (!String.IsNullOrEmpty(@item.Anime.Synonyms))
+                                {
+                                    <p>Syn: @Html.DisplayFor(modelItem => item.Anime.Synonyms)</p>
+                                }
+
+                                <p>Type: @Html.DisplayFor(modelItem => item.Anime.Type) (@Html.DisplayFor(modelItem => item.Anime.Episodes) eps)</p>
+                                <p>@item.Anime.GetStartDateNiceFormat() - @item.Anime.GetEndDateNiceFormat()</p>
+
+
+                                <button type="button" class="btn btn-info syn-btn" data-toggle="collapse" data-target="#@item.Anime.ID">Synopsis</button>
+                                <div id="@item.Anime.ID" class="collapse">
+                                    <p>@Html.Raw(@item.Anime.Synopsis)</p>
+                                </div>
+
+
+                            </div>
+                        </td>
+
+
+                        <td class="v-center">
+                            @Html.DisplayFor(modelItem => item.Anime.Score)
+                        </td>
+
+                        <td class="v-center">
+                            @Html.DisplayFor(modelItem => item.Anime.Status)@*needs to have a conditional on what to display*@
+                        </td>
+
+                        <td class="v-center">
+                            @Html.DisplayFor(modelItem => item.User_Status)
+                        </td>
+
+                        <td class="v-center">
+                            @*<a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |*@
+                            <a asp-action="Details" asp-route-id="@item.Anime.ID">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.Anime.ID">Delete</a>
+                        </td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
