@@ -32,22 +32,7 @@ namespace List_manager.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var success = false;
-
-                const string uri = "https://myanimelist.net/api/account/verify_credentials.xml";
-                using (var httpClient = new HttpClient())
-                {
-                    //need to do this properly in the future
-                    var byteArray = Encoding.ASCII.GetBytes($"{malUser.Username}:{malUser.Password}");
-                    var header = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
-                    httpClient.DefaultRequestHeaders.Authorization = header;
-                    httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/xml"));
-
-                    var result = await httpClient.GetAsync(uri);
-
-                    success = result.IsSuccessStatusCode;
-
-                }
+                var success = await MALApi.MALVerify(malUser.Username, malUser.Password);
 
                 if (success)
                 {
