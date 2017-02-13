@@ -1,0 +1,101 @@
+﻿@model List_manager.Models.UserAnime
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+<script>
+    $('head').append('<style>#rating::after{width:@(Model.Anime.Score * 10)%}</style>');
+</script>
+
+
+<div>
+    <h3>@Html.DisplayFor(model => model.Anime.Title) </h3>
+    <h5>
+        <i>
+            @Model.Anime.GetStartDateNiceFormat() -
+        @Model.Anime.GetEndDateNiceFormat()
+    </i>
+</h5>
+
+<span class="label label-info lb-md">MALID: @Html.DisplayFor(model => model.Anime.MALID)</span>
+<span class="label label-info lb-md">@Html.DisplayFor(model => model.Anime.Status)</span>
+<span class="label label-info lb-md">@Html.DisplayFor(modelItem => modelItem.Anime.Type)</span>
+<span class="label label-info lb-md">@Html.DisplayFor(modelItem => modelItem.Anime.Episodes) Episodes</span>
+<hr />
+
+<div class="row">
+
+    <div class="container col-md-3">
+        <img src="@Url.Content(Model.Anime.Image)" class="img-responsive">
+
+        <div>
+            <h4>Edit Status</h4>
+            
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <select asp-for="User_Status" class="form-control" style="width:90%;">
+                    <option value="On Hold">On Hold</option>
+                    <option value="Plan to watch">Plan to watch</option>
+                    <option value="Downloading">Downloading</option>
+                    <option value="Completed">Completed</option>
+                </select>
+
+                <input type="hidden" asp-for="Anime.MALID" />
+                <input type="hidden" asp-for="Anime.End_Date" />
+                <input type="hidden" asp-for="Anime.English" />
+                <input type="hidden" asp-for="Anime.Episodes" />
+                <input type="hidden" asp-for="Anime.Image" />
+                <input type="hidden" asp-for="Anime.Score" />
+                <input type="hidden" asp-for="Anime.Start_Date" />
+                <input type="hidden" asp-for="Anime.Status" />
+                <input type="hidden" asp-for="Anime.Synonyms" />
+                <input type="hidden" asp-for="Anime.Synopsis" />
+                <input type="hidden" asp-for="Anime.Title" />
+                <input type="hidden" asp-for="Anime.Type" />
+
+                <input type="hidden" name="returnUrl" value="@ViewData["returnUrl"]" />
+                <input type="submit" value="Add" class="btn btn-default" />
+
+        </div>
+
+        <hr />
+
+    </div>
+
+
+    <div class="container col-md-9">
+        <h4>Alternative Titles</h4>
+
+        @if (!String.IsNullOrEmpty(@Model.Anime.English))
+            {
+
+            <p><b>English:</b> @Html.DisplayFor(modelItem => modelItem.Anime.English)</p>
+        }
+
+        @if (!String.IsNullOrEmpty(@Model.Anime.Synonyms))
+            {
+            <p><b>Synonym:</b> @Html.DisplayFor(modelItem => modelItem.Anime.Synonyms)</p>
+        }
+
+
+        <hr />
+
+
+        <div>
+            <h4>MAL Score </h4>
+
+            <div id="rating" class="star-rating" data-></div>
+            <div class="mal-score"><span id="score">@Html.DisplayFor(model => model.Anime.Score)</span> /10</div>
+
+            <hr />
+
+            <div>
+                <h4>@Html.DisplayNameFor(model => model.Anime.Synopsis)</h4>
+                <p>@Html.Raw(Model.Anime.Synopsis)</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div>
+    <a href="@ViewData["returnUrl"]">Back to List</a> |
+    <a href="@Model.Anime.GetLink()" target="_blank">Go to MAL Webpage</a>
+</div>
+</div>

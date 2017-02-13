@@ -53,31 +53,7 @@ namespace List_manager.Controllers
             return View(userAnime);
         }
 
-        // GET: UserAnime/Create
-        public IActionResult Create()
-        {
-            ViewData["AnimeID"] = new SelectList(_context.Anime, "ID", "ID");
-            ViewData["ApplicationUserId"] = new SelectList(_context.Users, "Id", "Id");
-            return View();
-        }
-
-        // POST: UserAnime/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserAnimeID,AnimeID,ApplicationUserId,User_Status")] UserAnime userAnime)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(userAnime);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
-            ViewData["AnimeID"] = new SelectList(_context.Anime, "ID", "ID", userAnime.AnimeID);
-            ViewData["ApplicationUserId"] = new SelectList(_context.Users, "Id", "Id", userAnime.ApplicationUserId);
-            return View(userAnime);
-        }
+        
 
         // GET: UserAnime/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -96,6 +72,8 @@ namespace List_manager.Controllers
             ViewData["ApplicationUserId"] = new SelectList(_context.Users, "Id", "Id", userAnime.ApplicationUserId);
             return View(userAnime);
         }
+
+
 
         // POST: UserAnime/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
@@ -142,7 +120,7 @@ namespace List_manager.Controllers
                 return NotFound();
             }
 
-            var userAnime = await _context.UserAnimes.SingleOrDefaultAsync(m => m.UserAnimeID == id);
+            var userAnime = await _context.UserAnimes.Include(a => a.Anime).SingleOrDefaultAsync(m => m.UserAnimeID == id);
             if (userAnime == null)
             {
                 return NotFound();
@@ -166,5 +144,36 @@ namespace List_manager.Controllers
         {
             return _context.UserAnimes.Any(e => e.UserAnimeID == id);
         }
+
+
+        /*
+        // GET: UserAnime/Create
+        public IActionResult Create()
+        {
+            ViewData["AnimeID"] = new SelectList(_context.Anime, "ID", "ID");
+            ViewData["ApplicationUserId"] = new SelectList(_context.Users, "Id", "Id");
+            return View();
+        }
+
+        // POST: UserAnime/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("UserAnimeID,AnimeID,ApplicationUserId,User_Status")] UserAnime userAnime)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(userAnime);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            ViewData["AnimeID"] = new SelectList(_context.Anime, "ID", "ID", userAnime.AnimeID);
+            ViewData["ApplicationUserId"] = new SelectList(_context.Users, "Id", "Id", userAnime.ApplicationUserId);
+            return View(userAnime);
+        }
+
+        */
+
     }
 }

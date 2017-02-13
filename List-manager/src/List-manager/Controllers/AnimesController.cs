@@ -31,6 +31,8 @@ namespace List_manager.Controllers
         public async Task<IActionResult> Index()
         {
 
+
+
             var user = await GetCurrentUserAsync();
             var userId = user?.Id;
 
@@ -248,6 +250,8 @@ namespace List_manager.Controllers
         [Authorize(Policy = "MALApiPolicy")]
         public async Task<IActionResult> Search(string searchString)
         {
+
+            //Add in code that checks the cache for a current search term, if it matches the previous saved searched load cached results
 
             //Might be an alternative way of doing this, look into it
             //var claims = HttpContext.User.Claims.ToDictionary(claim => claim.Type, claim => claim.Value);

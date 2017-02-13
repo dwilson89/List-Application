@@ -8,14 +8,14 @@
     $('head').append('<style>#rating::after{width:@(Model.Score * 10)%}</style>');
 </script>
 
-<div>
+
     <div>
         <h3>@Html.DisplayFor(model => model.Title) </h3>
         <h5>
         <i>@Model.GetStartDateNiceFormat() -
         @Model.GetEndDateNiceFormat()</i>
         </h5>
-</div>
+
     <span class="label label-info lb-md">MALID: @Html.DisplayFor(model => model.MALID)</span>
     <span class="label label-info lb-md">@Html.DisplayFor(model => model.Status)</span>
     <span class="label label-info lb-md">@Html.DisplayFor(modelItem => modelItem.Type)</span>
@@ -27,8 +27,10 @@
         <div class="container col-md-3">
             <img src="@Url.Content(Model.Image)" class="img-responsive">
 
+            <hr />
+
             <div>
-                <h4>Edit Status</h4>
+                <h4>User Status</h4>
                 <form asp-action="Add">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <select name="user_status" class="form-control" style="width:90%;">
@@ -86,9 +88,6 @@
                 <div id="rating" class="star-rating" data-></div> 
                 <div class="mal-score"><span id="score">@Html.DisplayFor(model => model.Score)</span> /10</div>
 
-                    
-
-
             <hr />
 
             <div>
@@ -103,3 +102,4 @@
         <a href="@ViewData["returnUrl"]">Back to List</a> |
         <a href="@Model.GetLink()" target="_blank">Go to MAL Webpage</a>
     </div>
+</div>

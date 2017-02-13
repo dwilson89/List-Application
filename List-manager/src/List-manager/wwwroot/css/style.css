@@ -103,3 +103,7 @@ th {
     color: gold;
     text-shadow: 0 1px 0 #ab5414;
 }
+
+.row {
+    margin-bottom: 20px;
+}
