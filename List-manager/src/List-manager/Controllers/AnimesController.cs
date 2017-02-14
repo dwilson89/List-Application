@@ -241,7 +241,7 @@ namespace List_manager.Controllers
                     _context.UserAnimes.Add(new UserAnime { AnimeID = f_id, ApplicationUserId = userId, User_Status = user_status });
                     await _context.SaveChangesAsync();
                 }
-
+                
                 return Redirect(returnUrl);
             }
             return View(anime);

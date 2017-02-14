@@ -4,13 +4,29 @@
     ViewData["Title"] = "Index";
 }
 
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function () {
+
+window.setTimeout(function() {
+    $(".alert").fadeTo(1000, 0).slideUp(1000, function(){
+        $(this).remove();
+    });
+}, 5000);
+
+});
+</script>
+<div class="alert-box">
+    @Html.Raw(TempData["Alert"])
+</div>
+
 <h2>Anime List</h2>
 
 <p>
     <a asp-action="Search">Add to list</a>
 </p>
 
-<div class="container-fluid bg-2">
 
     @if (Model.Count<UserAnime>() != 0)
     {
@@ -87,7 +103,7 @@
                         </td>
 
                         <td class="v-center">
-                            @*<a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |*@
+                            <a asp-action="Edit" asp-route-id="@item.Anime.ID">Edit</a> |
                             <a asp-action="Details" asp-route-id="@item.Anime.ID">Details</a> |
                             <a asp-action="Delete" asp-route-id="@item.Anime.ID">Delete</a>
                         </td>
@@ -97,5 +113,5 @@
             </tbody>
         </table>
     }
-</div>
+
 

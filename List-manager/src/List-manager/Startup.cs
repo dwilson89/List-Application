@@ -54,6 +54,8 @@ namespace List_manager
 
             services.AddMemoryCache();
 
+            services.AddSession();
+
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
@@ -109,7 +111,7 @@ namespace List_manager
             // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
 
 
-
+            app.UseSession();
 
 
             // Authentication for the MAL user credentials

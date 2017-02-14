@@ -63,13 +63,17 @@ namespace List_manager.Controllers
                 return NotFound();
             }
 
-            var userAnime = await _context.UserAnimes.SingleOrDefaultAsync(m => m.UserAnimeID == id);
+            var userAnime = await _context.UserAnimes.Include(u => u.Anime).SingleOrDefaultAsync(m => m.UserAnimeID == id);
             if (userAnime == null)
             {
                 return NotFound();
             }
+
+            ViewData["returnUrl"] = Request.Headers["Referer"].ToString();
+            ViewData["Exists"] = true;
             ViewData["AnimeID"] = new SelectList(_context.Anime, "ID", "ID", userAnime.AnimeID);
             ViewData["ApplicationUserId"] = new SelectList(_context.Users, "Id", "Id", userAnime.ApplicationUserId);
+
             return View(userAnime);
         }
 
@@ -93,6 +97,9 @@ namespace List_manager.Controllers
                 {
                     _context.Update(userAnime);
                     await _context.SaveChangesAsync();
+                    TempData["Alert"] = "<div class=\"alert alert-success\">" +
+                        "   <b>Success!</b> Entry Updated! " + 
+                        "</div>";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -107,8 +114,9 @@ namespace List_manager.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            ViewData["AnimeID"] = new SelectList(_context.Anime, "ID", "ID", userAnime.AnimeID);
-            ViewData["ApplicationUserId"] = new SelectList(_context.Users, "Id", "Id", userAnime.ApplicationUserId);
+            //ViewData["AnimeID"] = new SelectList(_context.Anime, "ID", "ID", userAnime.AnimeID);
+            //ViewData["ApplicationUserId"] = new SelectList(_context.Users, "Id", "Id", userAnime.ApplicationUserId);
+
             return View(userAnime);
         }
 

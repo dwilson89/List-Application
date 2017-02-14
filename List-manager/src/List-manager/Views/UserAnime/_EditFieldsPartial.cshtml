@@ -27,7 +27,7 @@
         <img src="@Url.Content(Model.Anime.Image)" class="img-responsive">
 
         <div>
-            <h4>Edit Status</h4>
+            <h4>User Status</h4>
             
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <select asp-for="User_Status" class="form-control" style="width:90%;">
@@ -37,21 +37,8 @@
                     <option value="Completed">Completed</option>
                 </select>
 
-                <input type="hidden" asp-for="Anime.MALID" />
-                <input type="hidden" asp-for="Anime.End_Date" />
-                <input type="hidden" asp-for="Anime.English" />
-                <input type="hidden" asp-for="Anime.Episodes" />
-                <input type="hidden" asp-for="Anime.Image" />
-                <input type="hidden" asp-for="Anime.Score" />
-                <input type="hidden" asp-for="Anime.Start_Date" />
-                <input type="hidden" asp-for="Anime.Status" />
-                <input type="hidden" asp-for="Anime.Synonyms" />
-                <input type="hidden" asp-for="Anime.Synopsis" />
-                <input type="hidden" asp-for="Anime.Title" />
-                <input type="hidden" asp-for="Anime.Type" />
-
                 <input type="hidden" name="returnUrl" value="@ViewData["returnUrl"]" />
-                <input type="submit" value="Add" class="btn btn-default" />
+                <input type="submit" value="@((bool)ViewData["Exists"] ? "Update" : "Add")" class="btn btn-default" />
 
         </div>
 
@@ -93,9 +80,5 @@
         </div>
     </div>
 
-</div>
-<div>
-    <a href="@ViewData["returnUrl"]">Back to List</a> |
-    <a href="@Model.Anime.GetLink()" target="_blank">Go to MAL Webpage</a>
 </div>
 </div>

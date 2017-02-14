@@ -107,3 +107,7 @@ th {
 .row {
     margin-bottom: 20px;
 }
+
+.alert-box{
+    margin: 5px;
+}
