@@ -148,10 +148,67 @@ namespace List_manager.Controllers
             return RedirectToAction("Index");
         }
 
+        // GET: UserAnime/Create
+        public async Task<IActionResult> Add(int animeId)
+        {
+            //ViewData["AnimeID"] = new SelectList(_context.Anime, "ID", "ID");
+            //ViewData["ApplicationUserId"] = new SelectList(_context.Users, "Id", "Id");
+            ViewData["returnUrl"] = Request.Headers["Referer"].ToString();
+            var user = await GetCurrentUserAsync();
+            var userId = user?.Id;
+
+            var anime = await _context.Anime.SingleOrDefaultAsync(m => m.ID == animeId);
+
+            UserAnime userAnime = new Models.UserAnime {AnimeID = animeId, ApplicationUserId = userId, Anime = anime };
+            ViewData["Exists"] = false;
+            ViewData["returnUrl"] = TempData["returnUrl"].ToString();
+            return View(userAnime);
+        }
+
+
+        // POST: UserAnime/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Add([Bind("UserAnimeID,AnimeID,ApplicationUserId,User_Status")] UserAnime userAnime, string returnUrl = null)
+        {
+            if (ModelState.IsValid)
+            {
+
+                var user = await GetCurrentUserAsync();
+                var userId = user?.Id;
+
+                if (!AnimeExistsForUser(userAnime.AnimeID, userId))
+                {
+                    _context.UserAnimes.Add(userAnime);
+                    await _context.SaveChangesAsync();
+                }
+
+                TempData["Alert"] = "<div class=\"alert alert-success\">" +
+                        "   <b>Success!</b> Entry Added! " +
+                        "</div>";
+
+                return Redirect(returnUrl);
+
+                //return RedirectToAction("Index");
+            }
+            //ViewData["AnimeID"] = new SelectList(_context.Anime, "ID", "ID", userAnime.AnimeID);
+            //ViewData["ApplicationUserId"] = new SelectList(_context.Users, "Id", "Id", userAnime.ApplicationUserId);
+            return View(userAnime);
+        }
+
         private bool UserAnimeExists(int id)
         {
             return _context.UserAnimes.Any(e => e.UserAnimeID == id);
         }
+
+        private bool AnimeExistsForUser(int animeId, string userId)
+        {
+            return _context.UserAnimes.Any(e => e.AnimeID == animeId && e.ApplicationUserId.Equals(userId));
+
+        }
+
 
 
         /*
