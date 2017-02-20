@@ -13,97 +13,220 @@ using System.Net.Http.Headers;
 using System.Xml.Serialization;
 using System.Xml;
 using System.IO;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 
 
-/*Might remove and consolidate this in the future*/
+/*TODO - Once Implemented on the Front End properly finish off*/
 namespace List_manager.Controllers
 {
+    [Authorize(Policy = "MALApiPolicy")]
     public class MALController : Controller
     {
-        /// <summary>
-        /// Application DB context
-        /// </summary>
-        private readonly ApplicationDbContext _context;
 
-        /// <summary>
-        /// User manager - attached to application DB context
-        /// </summary>
+        private readonly ApplicationDbContext _context;
+        private IMemoryCache _cache;
         private readonly UserManager<ApplicationUser> _userManager;
 
 
-
-        public MALController(ApplicationDbContext context)
+        public MALController(ApplicationDbContext context, IMemoryCache cache, UserManager<ApplicationUser> userManager)
         {
             _context = context;
-            
+            _cache = cache;
+            _userManager = userManager;
+        }
+
+
+        //Add
+
+        // GET: MAL/Add
+        public async Task<IActionResult> Add(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var anime = await _context.Anime.SingleOrDefaultAsync(m => m.ID == id);
+            if (anime == null)
+            {
+                return NotFound();
+            }
+
+            return View(anime);
+        }
+
+        // POST: MAL/Add
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Add([Bind("Episode,Status,Score,Storage_Type,Storage_Value,Times_Rewatched," +
+            "Rewatch_Value,Date_Start,Date_Finish,Priority,Enable_Discussion,Enable_Rewatching,Comments,Tags")] UserAnimeData data, int animeId)
+        {
+            MALUserLogin malUser = GetUserCredentials();
+
+            if (malUser == null)
+            {
+                return RedirectToAction("Login", "MALAccount", new { returnUrl = "/Animes/Search" });
+            }
+
+            if (ModelState.IsValid)
+            {
+                HttpResponseMessage res = await MALApi.MALAdd(malUser.Username, malUser.Password, animeId, data);
+
+                if (res.IsSuccessStatusCode)
+                {
+                    //Set something to indicate to the user that it was a success
+                    return View();
+                }
+                else
+                {
+                    string reqMess = await res.Content.ReadAsStringAsync();
+                }
+
+            }
+
+            return View();
+        }
+
+        //Update
+
+        // GET: MAL/Add
+        public async Task<IActionResult> Update(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var anime = await _context.Anime.SingleOrDefaultAsync(m => m.ID == id);
+            if (anime == null)
+            {
+                return NotFound();
+            }
+
+            return View(anime);
+        }
+
+        // POST: MAL/Add
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Update([Bind("Episode,Status,Score,Storage_Type,Storage_Value,Times_Rewatched," +
+            "Rewatch_Value,Date_Start,Date_Finish,Priority,Enable_Discussion,Enable_Rewatching,Comments,Tags")] UserAnimeData data, int animeId)
+        {
+
+            MALUserLogin malUser = GetUserCredentials();
+
+            if(malUser == null)
+            {
+                return RedirectToAction("Login", "MALAccount", new { returnUrl = "/Animes/Search" });
+            }
+
+            if (ModelState.IsValid)
+            {
+                HttpResponseMessage res = await MALApi.MALUpdate(malUser.Username, malUser.Password, animeId, data);
+
+                if (res.IsSuccessStatusCode)
+                {
+                    //Set something to indicate to the user that it was a success
+                    return View();
+                } else
+                {
+                    string reqMess = await res.Content.ReadAsStringAsync();
+                }
+
+            }
+
+            return View();
+        }
+
+        // GET: MAL/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var anime = await _context.Anime.SingleOrDefaultAsync(m => m.ID == id);
+            if (anime == null)
+            {
+                return NotFound();
+            }
+
+            return View(anime);
+        }
+
+        // POST: MAL/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            MALUserLogin malUser = GetUserCredentials();
+
+            if (malUser == null)
+            {
+                return RedirectToAction("Login", "MALAccount", new { returnUrl = "/Animes/Search" });
+            }
+
+            HttpResponseMessage res = await MALApi.MALDelete(malUser.Username, malUser.Password, id);
+
+            if (res.IsSuccessStatusCode)
+            {
+                //Set something to indicate to the user that it was a success
+                return View();
+            }
+            else
+            {
+                string reqMess = await res.Content.ReadAsStringAsync();
+            }
+
+            return View();
 
         }
 
-        [Authorize(ActiveAuthenticationSchemes = "MALCookie")]
-        public async Task<IActionResult> Index(string searchString)
+        // GET: MAL/Search/Bleach
+        public async Task<IActionResult> Search(string searchString)
         {
 
-            //Might be an alternative way of doing this, look into it
-            //var claims = HttpContext.User.Claims.ToDictionary(claim => claim.Type, claim => claim.Value);
-            //string userName = claims["Username"];
-            //string password = claims["Secret"];
+            MALUserLogin malUser = GetUserCredentials();
 
-            string userName = HttpContext.User.Claims.First(p => p.Type == "Username").Value;
-            string password = HttpContext.User.Claims.First(p => p.Type == "Secret").Value;
+            if (malUser == null)
+            {
+                return RedirectToAction("Login", "MALAccount", new { returnUrl = "/Animes/Search" });
+            }
 
-
-            Models.AnimeList list = new Models.AnimeList();
+            AnimeList list = new Models.AnimeList();
             if (!String.IsNullOrEmpty(searchString))
             {
-                const string uri = "https://myanimelist.net/api/anime/search.xml?q=";
-                using (var httpClient = new HttpClient())
-                {
-                    //need to do this properly in the future
-                    var byteArray = Encoding.ASCII.GetBytes($"{userName}:{password}");
-                    var header = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
-                    httpClient.DefaultRequestHeaders.Authorization = header;
-                    httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/xml"));
 
-                    var result = await httpClient.GetStringAsync(uri + searchString);
+                list = await MALApi.MALSearch(malUser.Username, malUser.Password, searchString);
+                _cache.CreateEntry("SearchResults");
+                _cache.Set("SearchResults", list);
 
-                    list = XMLToObject(result);
-
-                }
             }
 
             return View(list);
         }
 
-        //Might need to rewrite this in the future to use XmlSerializerInputFormatter - also put into using context -using the reader
-        private static Models.AnimeList XMLToObject(string xml)
+
+        private MALUserLogin GetUserCredentials()
         {
+            var malCookiesAuth = HttpContext.Authentication.GetAuthenticateInfoAsync("MALCookie");
 
-            XmlSerializer serializer = null;
-            XmlReader reader = null;
-            Models.AnimeList animeList = new Models.AnimeList();
-            try
+            if (malCookiesAuth.Result.Description.AuthenticationScheme == null)
             {
-                MemoryStream s = new MemoryStream(Encoding.UTF8.GetBytes(xml));
-                serializer = new XmlSerializer(typeof(Models.AnimeList));
-                reader = XmlReader.Create(s);
-                animeList = (Models.AnimeList)serializer.Deserialize(reader);
-            }
-            catch (Exception exp)
-            {
-                Console.WriteLine(exp.StackTrace);
-            }
-            finally
-            {
-                if (reader != null)
-                {
-                    reader.Dispose();
-
-                }
-
+                return null;
             }
 
-            return animeList;
+            //todo add in exception handling if something goes wrong
+            var claims = malCookiesAuth.Result.Principal.Claims;
+            string userName = claims.First(p => p.Type == "Username").Value;
+            string password = claims.First(p => p.Type == "Secret").Value; 
+
+            return new MALUserLogin { Username = userName, Password = password };
         }
+
+
 
     }
 }

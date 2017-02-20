@@ -31,7 +31,7 @@ namespace List_manager.Controllers
         public async Task<IActionResult> Index()
         {
 
-
+            
 
             var user = await GetCurrentUserAsync();
             var userId = user?.Id;
@@ -324,7 +324,7 @@ namespace List_manager.Controllers
             //var claims = HttpContext.User.Claims.ToDictionary(claim => claim.Type, claim => claim.Value);
             //string userName = claims["Username"];
             //string password = claims["Secret"]
-            
+
             var malCookiesAuth = HttpContext.Authentication.GetAuthenticateInfoAsync("MALCookie");
 
             if (malCookiesAuth.Result.Description.AuthenticationScheme == null)

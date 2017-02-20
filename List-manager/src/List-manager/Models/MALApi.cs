@@ -32,14 +32,14 @@ namespace List_manager.Models
             return  XmlConvert.DeserializeObject<AnimeList>(result);
         }
 
-        public static async Task<HttpResponseMessage> MALAdd(string username, string password, int id, MALUserAnime data)
+        public static async Task<HttpResponseMessage> MALAdd(string username, string password, int id, UserAnimeData data)
         {
             string uri = $"https://myanimelist.net/api/animelist/add/{id}.xml"; // need to look at how to add data
 
             return await PostMALAPI(username, password, uri, XmlConvert.SerializeObject(data));
         }
 
-        public static async Task<HttpResponseMessage> MALUpdate(string username, string password, int id, MALUserAnime data)
+        public static async Task<HttpResponseMessage> MALUpdate(string username, string password, int id, UserAnimeData data)
         {
 
             string uri = $"https://myanimelist.net/api/animelist/update/{id}.xml";

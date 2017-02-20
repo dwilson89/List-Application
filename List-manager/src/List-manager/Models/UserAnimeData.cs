@@ -24,7 +24,7 @@ namespace List_manager.Models
 
         public int Times_Rewatched { get; set; }
 
-        public int Rewatch_value { get; set; }
+        public int Rewatch_Value { get; set; }
 
         public DateTime Date_Start { get; set; }
 
@@ -42,6 +42,8 @@ namespace List_manager.Models
 
         //seperated by commma's
         public string Tags { get; set; }
+
+        // Might create a constructor that sets defaults for these values
 
     }
 }

@@ -191,10 +191,8 @@ namespace List_manager.Controllers
 
                 return Redirect(returnUrl);
 
-                //return RedirectToAction("Index");
             }
-            //ViewData["AnimeID"] = new SelectList(_context.Anime, "ID", "ID", userAnime.AnimeID);
-            //ViewData["ApplicationUserId"] = new SelectList(_context.Users, "Id", "Id", userAnime.ApplicationUserId);
+
             return View(userAnime);
         }
 
