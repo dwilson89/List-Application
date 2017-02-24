@@ -69,11 +69,10 @@ namespace List_manager.Controllers
             {
                 return NotFound();
             }
-
+            ViewData["Episodes"] = userAnime.Anime.Episodes;
             ViewData["returnUrl"] = Request.Headers["Referer"].ToString();
             ViewData["Exists"] = true;
-            ViewData["AnimeID"] = new SelectList(_context.Anime, "ID", "ID", userAnime.AnimeID);
-            ViewData["ApplicationUserId"] = new SelectList(_context.Users, "Id", "Id", userAnime.ApplicationUserId);
+            
 
             return View(userAnime);
         }

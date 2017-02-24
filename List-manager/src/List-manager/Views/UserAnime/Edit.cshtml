@@ -7,18 +7,50 @@
 
 <h2>Edit</h2>
 
-<form asp-action="Edit">
-    <div class="form-horizontal">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <input type="hidden" asp-for="UserAnimeID" />
-        <input type="hidden" asp-for="AnimeID" />
-        <input type="hidden" asp-for="ApplicationUserId" />
+<div id="Tabs" role="tabpanel">
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#Tab1" aria-controls="Tab1" role="tab" data-toggle="tab">
+                User Edit
+            </a>
+        </li>
+        <li>
+            <a href="#Tab2" aria-controls="Tab2" role="tab" data-toggle="tab">
+                MAL Edit
+            </a>
+        </li>
+    </ul>
 
-        @Html.Partial("_editFieldsPartial", Model)
+    <div class="tab-content">
+       
+        <div role="tabpanel" class="tab-pane active" id="Tab1" >
+            <form asp-action="Edit">
+                <div class="form-horizontal">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="UserAnimeID" />
+                    <input type="hidden" asp-for="AnimeID" />
+                    <input type="hidden" asp-for="ApplicationUserId" />
+
+                    @Html.Partial("_editFieldsPartial", Model)
+
+                </div>
+            </form>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="Tab2">
+            <form asp-action="Update" asp-controller="MAL">
+                <div class="form-horizontal">
+                   
+                   
+                    @Html.Partial("_MALEditPartial", new UserAnimeData())
+
+                </div>
+            </form>
+            
+        </div>
 
     </div>
-</form>
 
+</div>
 <div>
     <a href="@ViewData["returnUrl"]">Back to List</a> |
     <a href="@Model.Anime.GetLink()" target="_blank">Go to MAL Webpage</a> |
