@@ -22,6 +22,7 @@ namespace List_manager.Controllers
         {
             _context = context;
             _userManager = userManager;
+
         }
 
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);

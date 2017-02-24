@@ -73,7 +73,7 @@ namespace List_manager
             {
                 options.AddPolicy("MALApiPolicy", policy =>
                 {
-                    policy.AddAuthenticationSchemes("MALCookie");
+                    policy.AddAuthenticationSchemes("MALCookie","Default");
                     policy.RequireAuthenticatedUser();
                 });
 

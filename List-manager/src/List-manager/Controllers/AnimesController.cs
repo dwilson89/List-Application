@@ -15,35 +15,19 @@ namespace List_manager.Controllers
     public class AnimesController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private IMemoryCache _cache;
-        private readonly UserManager<ApplicationUser> _userManager;
 
-        public AnimesController(ApplicationDbContext context, IMemoryCache cache, UserManager<ApplicationUser> userManager)
+        public AnimesController(ApplicationDbContext context)
         {
             _context = context;
-            _cache = cache;
-            _userManager = userManager;
         }
 
-        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
+        
 
         // GET: Animes
         public async Task<IActionResult> Index()
-        {
+        { 
 
-            
-
-            var user = await GetCurrentUserAsync();
-            var userId = user?.Id;
-
-            var anime = _context.UserAnimes.Where(d =>d.ApplicationUserId == userId).Include(d => d.Anime).Select(s => s.Anime);
-
-            var anime2 = _context.UserAnimes.Where(d => d.ApplicationUserId == userId).Include(d => d.Anime);
-
-            //Alternative method, needs a bit more manipulation though
-            var appuser = await _context.Users.Include(s => s.UserAnime).ThenInclude(e => e.Anime).AsNoTracking().SingleOrDefaultAsync(m => m.Id == userId);
-
-            return View(await anime2.ToListAsync());
+            return View(await _context.Anime.ToListAsync());
            
         }
 
@@ -170,79 +154,7 @@ namespace List_manager.Controllers
             return _context.Anime.Any(e => e.MALID == id);
         }
 
-
-        private bool AnimeExistsForUser(int animeId, string userId)
-        {
-            return _context.UserAnimes.Any(e => e.AnimeID == animeId && e.ApplicationUserId.Equals(userId));
-            
-        }
-
-
-
-
-
         /*
-                //Might not be proper to rely on a cache, however given the nature for the time being this will do
-                public IActionResult Add(int id)
-                {
-                    try {
-                        ViewData["returnUrl"] = Request.Headers["Referer"].ToString();
-
-
-                        Anime anime = ((AnimeList)_cache.Get("SearchResults")).EntryList[id];
-
-
-                        return View(anime);
-
-                    } catch (Exception ex)//Accessing the _cache will fail
-                    {
-                        //log error
-                        //inform the user and redirect
-                    } 
-
-                    return RedirectToAction("Search");
-                }
-
-                // POST: Animes/Create
-                // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-                // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-                [HttpPost, ActionName("Add")]
-                [ValidateAntiForgeryToken]
-                public async Task<IActionResult> AddToDB([Bind("MALID,End_Date,English,Episodes,Image,Score,Start_Date,Status,Synonyms,Synopsis,Title,Type")]Anime anime,string user_status, string returnUrl = null)
-                {
-                    ViewData["return"] = returnUrl;
-                    if (ModelState.IsValid)
-                    {
-                        int f_id = 0;
-                        if(!AnimeExists(anime.MALID))
-                        {
-                            _context.Add(anime);
-                            await _context.SaveChangesAsync();
-
-                            f_id = anime.ID;
-                        } else
-                        {
-                            f_id = _context.Anime.First(f => f.MALID == anime.MALID).ID;
-                        }
-
-
-                        //Add to the relational table for the user and the anime added
-
-                        var user = await GetCurrentUserAsync();
-                        var userId = user?.Id;
-
-                        if (!AnimeExistsForUser(f_id, userId))
-                        {
-                            _context.UserAnimes.Add(new UserAnime { AnimeID = f_id, ApplicationUserId = userId, User_Status = user_status });
-                            await _context.SaveChangesAsync();
-                        }
-
-                        return Redirect(returnUrl);
-                    }
-                    return View(anime);
-                }
-                */
-
         public async Task<IActionResult> Add(int id)
         {
             try
@@ -280,15 +192,13 @@ namespace List_manager.Controllers
 
             return RedirectToAction("Search");
         }
+        */
 
-        /*
-
-        [HttpPost]
+        [HttpPost, ActionName("Add")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Search([Bind("MALID,End_Date,English,Episodes,Image,Score,Start_Date,Status,Synonyms,Synopsis,Title,Type")]Anime anime)
+        public async Task<IActionResult> AddToDB([Bind("MALID,End_Date,English,Episodes,Image,Score,Start_Date,Status,Synonyms,Synopsis,Title,Type")]Anime anime)
         {
             TempData["returnUrl"] = Request.Headers["Referer"].ToString();
-
             if (ModelState.IsValid)
             {
                 int f_id = 0;
@@ -307,49 +217,10 @@ namespace List_manager.Controllers
 
                 //Add to the relational table for the user and the anime added
 
-                return RedirectToAction("Add","UserAnime",f_id);
+                return RedirectToAction("Add", "UserAnime", new { animeId = f_id });
             }
-            return View();
-
+            return Redirect(Request.Headers["Referer"].ToString());
         }
-        */
-
-        [Authorize(Policy = "MALApiPolicy")]
-        public async Task<IActionResult> Search(string searchString)
-        {
-
-            //Add in code that checks the cache for a current search term, if it matches the previous saved searched load cached results
-
-            //Might be an alternative way of doing this, look into it
-            //var claims = HttpContext.User.Claims.ToDictionary(claim => claim.Type, claim => claim.Value);
-            //string userName = claims["Username"];
-            //string password = claims["Secret"]
-
-            var malCookiesAuth = HttpContext.Authentication.GetAuthenticateInfoAsync("MALCookie");
-
-            if (malCookiesAuth.Result.Description.AuthenticationScheme == null)
-            {
-                return RedirectToAction("Login", "MALAccount",new { returnUrl = "/Animes/Search"});
-            }
-
-            //todo add in exception handling if something goes wrong
-            var claims = malCookiesAuth.Result.Principal.Claims;
-            string userName = claims.First(p => p.Type == "Username").Value;
-            string password = claims.First(p => p.Type == "Secret").Value;
-
-            Models.AnimeList list = new Models.AnimeList();
-            if (!String.IsNullOrEmpty(searchString))
-            {
-
-                list = await MALApi.MALSearch(userName, password, searchString);
-                _cache.CreateEntry("SearchResults");
-                _cache.Set("SearchResults", list);
-
-            }
-
-            return View(list);
-        }
-
     }
 }
 

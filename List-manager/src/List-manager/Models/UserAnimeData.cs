@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,10 +12,12 @@ namespace List_manager.Models
      */
     public class UserAnimeData
     {
+        [Required]
         public int Episode { get; set; }
         //1/watching, 2/completed, 3/onhold, 4/dropped, 6/plantowatch
+        [Required]
         public int Status { get; set; }
-
+        [Required]
         public int Score { get; set; }
 
         //unknown that this point in time
