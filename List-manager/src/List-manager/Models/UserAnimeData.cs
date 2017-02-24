@@ -36,7 +36,11 @@ namespace List_manager.Models
         public int Priority { get; set; }
 
         //1=enable, 0=disable
-        public int Enable_Discussion { get; set; }
+        public int Enable_Discussion {
+            get;
+
+            set;
+        }
 
         //1=enable, 0=disable
         public int Enable_Rewatching { get; set; }

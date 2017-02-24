@@ -8,21 +8,27 @@
         <div class="form-group">
             <label asp-for="Episode" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Episode" class="form-control" />
+                <input asp-for="Episode" max="@ViewData["Episodes"]" class="form-control" /> / @ViewData["Episodes"]
                 <span asp-validation-for="Episode" class="text-danger" />
             </div>
         </div>
         <div class="form-group">
             <label asp-for="Status" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Status" class="form-control" />
+                <select asp-for="Status" class="form-control">
+                    <option value="watching">Watching</option>
+                    <option value="completed">Completed</option>
+                    <option value="onhold">On Hold</option>
+                    <option value="dropped">Dropped</option>
+                    <option value="plantowatch">Plan to Watch</option>
+                </select>
                 <span asp-validation-for="Status" class="text-danger" />
             </div>
         </div>
         <div class="form-group">
             <label asp-for="Score" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Score" class="form-control" />
+                <input asp-for="Score" max="10" min="0" class="form-control" /> / 10
                 <span asp-validation-for="Score" class="text-danger" />
             </div>
         </div>
@@ -78,14 +84,14 @@
         <div class="form-group">
             <label asp-for="Enable_Discussion" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Enable_Discussion" class="form-control" />
+                <input type="checkbox" asp-for="Enable_Discussion" value="0" class="form-control" />
                 <span asp-validation-for="Enable_Discussion" class="text-danger" />
             </div>
         </div>
         <div class="form-group">
             <label asp-for="Enable_Rewatching" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Enable_Rewatching" class="form-control" />
+                <input type="checkbox" asp-for="Enable_Rewatching" value="0" class="form-control" />
                 <span asp-validation-for="Enable_Rewatching" class="text-danger" />
             </div>
         </div>
@@ -101,6 +107,7 @@
             <div class="col-md-10">
                 <input asp-for="Tags" class="form-control" />
                 <span asp-validation-for="Tags" class="text-danger" />
+                Use commas to separate tags.
             </div>
         </div>
         <div class="form-group">
