@@ -42,38 +42,8 @@ namespace List_manager.Models
             set;
         }
 
-        public bool Is_Enable_Discussion {
-            get
-            {
-                return Enable_Discussion == 1;
-            }
-            set
-            {
-                if (value)
-                    Enable_Discussion = 1;
-                else
-                    Enable_Discussion = 0;   
-            }
-        }
-
         //1=enable, 0=disable
         public int Enable_Rewatching { get; set; }
-
-        public bool Is_Enable_Rewatching {
-
-            get
-            {
-                return Enable_Rewatching == 1;
-            }
-            set
-            {
-                if (value)
-                    Enable_Rewatching = 1;
-                else
-                    Enable_Rewatching = 0;
-            }
-
-        }
 
         public string Comments { get; set; }
 
