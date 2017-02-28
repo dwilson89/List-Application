@@ -111,3 +111,30 @@ th {
 .alert-box{
     margin: 5px;
 }
+
+.section {
+    display:flex;
+    flex-basis:100%;
+    align-items:center;
+    color: #101010;
+    margin:8px 0px;
+    padding:20px;
+}
+
+.section::before, .section::after {
+    content: "";
+    flex-grow: 1;
+    background: #101010;
+    height:1px;
+    font-size:0px;
+    line-height:0px;
+    margin: 0px 8px;
+}
+
+.form-field > input{
+    display:none !important;
+}
+
+.form-field > span {
+    display:block;
+}

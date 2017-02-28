@@ -5,10 +5,18 @@
         
         <div class="container">
 
+            <div class="advanced collapse">
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Create" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Episode" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
+                <div class="col-md-10 form-field">
                     <input asp-for="Episode" max="@ViewData["Episodes"]" class="form-control" /> / @ViewData["Episodes"]
                     <span asp-validation-for="Episode" class="text-danger" />
                 </div>
@@ -34,9 +42,12 @@
                 </div>
             </div>
 
-            <a data-toggle="collapse" href="#advanced">Advanced Options</a>
+            <div class="section">
+                <a data-toggle="collapse" href=".advanced">Advanced Options</a>
+            </div>
 
-            <div id="advanced" class="collapse container">
+
+            <div class="collapse advanced container">
 
                 <div class="form-group">
                     <label asp-for="Storage_Type" class="col-md-2 control-label"></label>
@@ -102,27 +113,27 @@
                     <label asp-for="Enable_Discussion" class="col-md-2 control-label"></label>
                     <div class="col-md-10">
                         <input type="checkbox" name="Enable_Discussion" value="1" class="form-control" />
-                
+
                     </div>
                 </div>
                 <div class="form-group">
                     <label asp-for="Enable_Rewatching" class="col-md-2 control-label"></label>
                     <div class="col-md-10">
                         <input type="checkbox" name="Enable_Rewatching" value="1" class="form-control" />
-                
+
                     </div>
                 </div>
                 <div class="form-group">
                     <label asp-for="Comments" class="col-md-2 control-label"></label>
                     <div class="col-md-10">
-                        <input asp-for="Comments" class="form-control" />
+                        <textarea asp-for="Comments" rows="5" cols="40" class="form-control"></textarea>
                         <span asp-validation-for="Comments" class="text-danger" />
                     </div>
                 </div>
                 <div class="form-group">
                     <label asp-for="Tags" class="col-md-2 control-label"></label>
                     <div class="col-md-10">
-                        <input asp-for="Tags" class="form-control" />
+                        <textarea asp-for="Tags" rows="5" cols="40" class="form-control" ></textarea>
                         <span asp-validation-for="Tags" class="text-danger" />
                         Use commas to separate tags.
                     </div>
