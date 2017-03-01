@@ -3,7 +3,7 @@
 
     <div class="form-horizontal">
         
-        <div class="container">
+        <div class="container mal-edit">
 
             <div class="advanced collapse">
                 <div class="form-group">
@@ -23,7 +23,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Status" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
+                <div class="col-md-10 form-field">
                     <select asp-for="Status" class="form-control">
                         <option value="1">Watching</option>
                         <option value="2">Completed</option>
@@ -36,7 +36,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Score" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
+                <div class="col-md-10 form-field">
                     <input asp-for="Score" max="10" min="0" class="form-control" /> / 10
                     <span asp-validation-for="Score" class="text-danger" />
                 </div>
@@ -51,7 +51,7 @@
 
                 <div class="form-group">
                     <label asp-for="Storage_Type" class="col-md-2 control-label"></label>
-                    <div class="col-md-10">
+                    <div class="col-md-10 form-field">
                         <select asp-for="Status" class="form-control">
                             <option value="">Select storage type</option>
                             <option value="1">Hard Drive</option>
@@ -68,7 +68,7 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="Storage_Value" class="col-md-2 control-label"></label>
-                    <div class="col-md-10">
+                    <div class="col-md-10 form-field">
                         <input asp-for="Storage_Value" class="form-control" />
                         <span asp-validation-for="Storage_Value" class="text-danger" />
                         Value may be number of discs, tapes, or size in gigabytes for hard-drive storage types
@@ -76,35 +76,35 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="Times_Rewatched" class="col-md-2 control-label"></label>
-                    <div class="col-md-10">
+                    <div class="col-md-10 form-field">
                         <input asp-for="Times_Rewatched" class="form-control" />
                         <span asp-validation-for="Times_Rewatched" class="text-danger" />
                     </div>
                 </div>
                 <div class="form-group">
                     <label asp-for="Rewatch_Value" class="col-md-2 control-label"></label>
-                    <div class="col-md-10">
+                    <div class="col-md-10 form-field">
                         <input asp-for="Rewatch_Value" class="form-control" />
                         <span asp-validation-for="Rewatch_Value" class="text-danger" />
                     </div>
                 </div>
                 <div class="form-group">
                     <label asp-for="Date_Start" class="col-md-2 control-label"></label>
-                    <div class="col-md-10">
-                        <input asp-for="Date_Start" type="date" class="form-control" />
+                    <div class="col-md-10 form-field">
+                        <input asp-for="Date_Start" type="date" value="null" class="form-control" />
                         <span asp-validation-for="Date_Start" class="text-danger" />
                     </div>
                 </div>
                 <div class="form-group">
                     <label asp-for="Date_Finish" class="col-md-2 control-label"></label>
-                    <div class="col-md-10">
-                        <input asp-for="Date_Finish" type="date" class="form-control" />
+                    <div class="col-md-10 form-field">
+                        <input asp-for="Date_Finish" type="date" value="null" class="form-control" />
                         <span asp-validation-for="Date_Finish" class="text-danger" />
                     </div>
                 </div>
                 <div class="form-group">
                     <label asp-for="Priority" class="col-md-2 control-label"></label>
-                    <div class="col-md-10">
+                    <div class="col-md-10 form-field">
                         <input asp-for="Priority" class="form-control" />
                         <span asp-validation-for="Priority" class="text-danger" />
                     </div>
@@ -112,14 +112,14 @@
                 <div class="form-group">
                     <label asp-for="Enable_Discussion" class="col-md-2 control-label"></label>
                     <div class="col-md-10">
-                        <input type="checkbox" name="Enable_Discussion" value="1" class="form-control" />
+                        <input type="checkbox" name="Enable_Discussion" value="1" class="form-check" />
 
                     </div>
                 </div>
                 <div class="form-group">
                     <label asp-for="Enable_Rewatching" class="col-md-2 control-label"></label>
                     <div class="col-md-10">
-                        <input type="checkbox" name="Enable_Rewatching" value="1" class="form-control" />
+                        <input type="checkbox" name="Enable_Rewatching" value="1" class="form-check" />
 
                     </div>
                 </div>

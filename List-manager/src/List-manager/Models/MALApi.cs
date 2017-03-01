@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace List_manager.Models
 {
@@ -105,6 +106,10 @@ namespace List_manager.Models
         {
             HttpResponseMessage result;
 
+          
+            string test = RemoveAllNamespaces(data);
+
+
             using (var httpClient = new HttpClient())
             {
                 //need to do this properly in the future
@@ -112,16 +117,42 @@ namespace List_manager.Models
                 var header = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
                 httpClient.DefaultRequestHeaders.Authorization = header;
 
-                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/xml"));
+                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
+
+                
 
                 //add data
-                HttpContent content = new StringContent(data, UTF8Encoding.UTF8, "application/xml");
+                HttpContent content = new StringContent("data=<?xml version=\"1.0\" encoding=\"utf-8\"?>" + test, UTF8Encoding.UTF8, "application/x-www-form-urlencoded");
 
                 result = await httpClient.PostAsync(uri, content);
-
+                
 
             }
             return result;
+        }
+
+        //Implemented based on interface, not part of algorithm
+        public static string RemoveAllNamespaces(string xmlDocument)
+        {
+            XElement xmlDocumentWithoutNs = RemoveAllNamespaces(XElement.Parse(xmlDocument));
+
+            return xmlDocumentWithoutNs.ToString();
+        }
+
+        //Core recursion function
+        private static XElement RemoveAllNamespaces(XElement xmlDocument)
+        {
+            if (!xmlDocument.HasElements)
+            {
+                XElement xElement = new XElement(xmlDocument.Name.LocalName);
+                xElement.Value = xmlDocument.Value;
+
+                //foreach (XAttribute attribute in xmlDocument.Attributes())
+                //    xElement.Add(attribute);
+
+                return xElement;
+            }
+            return new XElement(xmlDocument.Name.LocalName, xmlDocument.Elements().Select(el => RemoveAllNamespaces(el)));
         }
 
     }

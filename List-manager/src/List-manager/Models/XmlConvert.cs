@@ -19,7 +19,7 @@ namespace List_manager.Models
             }
             try {
 
-                using (System.IO.StringWriter stringWriter = new System.IO.StringWriter())
+                using (System.IO.StringWriter stringWriter = new Utf8StringWriter())
                 {
                     var serializer = new System.Xml.Serialization.XmlSerializer(typeof(T));
                     serializer.Serialize(stringWriter, data);
@@ -57,5 +57,10 @@ namespace List_manager.Models
                 return new T();
             }
         }
+    }
+
+    public class Utf8StringWriter : StringWriter
+    {
+        public override Encoding Encoding => Encoding.UTF8;
     }
 }

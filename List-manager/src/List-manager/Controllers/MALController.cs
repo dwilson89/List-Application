@@ -73,23 +73,28 @@ namespace List_manager.Controllers
             {
                 HttpResponseMessage res = await MALApi.MALAdd(malUser.Username, malUser.Password, animeId, data);
 
-                if (res.IsSuccessStatusCode)
+                if (res.IsSuccessStatusCode && res.ReasonPhrase == "Created")
                 {
                     //Set something to indicate to the user that it was a success
-                    return View();
-                }
-                else
+                    
+                } else if(!res.IsSuccessStatusCode)
                 {
-                    string reqMess = await res.Content.ReadAsStringAsync();
+                    //try updating it
+                    return await Update(data, animeId);
+
+                } else
+                {
+                    //something went wrong
                 }
+               
 
             }
 
-            return View();
+            return Redirect(Request.Headers["Referer"].ToString());
         }
 
         //Update
-
+        /*
         // GET: MAL/Add
         public async Task<IActionResult> Update(int? id)
         {
@@ -106,12 +111,12 @@ namespace List_manager.Controllers
 
             return View(anime);
         }
+        */
 
         // POST: MAL/Add
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Update([Bind("Episode,Status,Score,Storage_Type,Storage_Value,Times_Rewatched," +
-            "Rewatch_Value,Date_Start,Date_Finish,Priority,Enable_Discussion,Enable_Rewatching,Comments,Tags")] UserAnimeData data, int animeId)
+        public async Task<IActionResult> Update([Bind("Episode,Status,Score,Storage_Type,Storage_Value,Times_Rewatched,Rewatch_Value,Date_Start,Date_Finish,Priority,Enable_Discussion,Enable_Rewatching,Comments,Tags")] UserAnimeData data, int animeId)
         {
 
             MALUserLogin malUser = GetUserCredentials();
@@ -128,7 +133,7 @@ namespace List_manager.Controllers
                 if (res.IsSuccessStatusCode)
                 {
                     //Set something to indicate to the user that it was a success
-                    return View();
+                    
                 } else
                 {
                     string reqMess = await res.Content.ReadAsStringAsync();
@@ -136,7 +141,7 @@ namespace List_manager.Controllers
 
             }
 
-            return View();
+            return Redirect(Request.Headers["Referer"].ToString());
         }
 
         // GET: MAL/Delete/5

@@ -132,9 +132,14 @@ th {
 }
 
 .form-field > input{
-    display:none !important;
+    display:inline !important;
 }
 
 .form-field > span {
     display:block;
+}
+
+.mal-edit {
+    padding: 10px;
+
 }

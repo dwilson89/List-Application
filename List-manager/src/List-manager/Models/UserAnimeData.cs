@@ -11,6 +11,7 @@ namespace List_manager.Models
      * Class for the datatype being sent back to the MAL API in order to be used to update/Add an entry to the users list.
      * Use will be a form a user can input values into before posting the request 
      */
+    [XmlRoot("entry")]
     public class UserAnimeData
     {
         [Required]
@@ -64,31 +65,41 @@ namespace List_manager.Models
         
 
         [XmlIgnoreAttribute]
-        public DateTime Date_Start
+        public DateTime? Date_Start
         {
             get { return date_start; }
             set
             {
                 date_start = value;
-                Date_Start_Str = value.Date.ToString("MMddyyyy");
+
+                if (value != null)
+                {
+                    Date_Start_Str = value?.Date.ToString("MMddyyyy");
+                }
             }
         }
 
         [XmlIgnoreAttribute]
-        public DateTime Date_Finish
+        public DateTime? Date_Finish
         {
             get { return date_finish; }
             set
             {
                 date_finish = value;
-                Date_Finish_Str = value.Date.ToString("MMddyyyy");
+
+                if(value != null)
+                {
+                    Date_Finish_Str = value?.Date.ToString("MMddyyyy");
+                }
+
+               
             }
         }
 
         [XmlIgnoreAttribute]
-        private DateTime date_start;
+        private DateTime? date_start;
         [XmlIgnoreAttribute]
-        private DateTime date_finish;
+        private DateTime? date_finish;
 
     }
 }

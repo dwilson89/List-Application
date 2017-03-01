@@ -37,9 +37,9 @@
             </form>
         </div>
         <div role="tabpanel" class="tab-pane" id="Tab2">
-            <form asp-action="Update" asp-controller="MAL">
+            <form asp-action="Add" asp-controller="MAL">
                 <div class="form-horizontal">
-                   
+                    <input type="hidden" name="animeId" value="@Model.Anime.MALID" />
                    
                     @Html.Partial("_MALEditPartial", new UserAnimeData())
 
@@ -52,7 +52,7 @@
 
 </div>
 <div>
-    <a href="@ViewData["returnUrl"]">Back to List</a> |
+    <a asp-action="Index">Back to List</a> |
     <a href="@Model.Anime.GetLink()" target="_blank">Go to MAL Webpage</a> |
     <a asp-action="Delete">Delete</a> 
 </div>
