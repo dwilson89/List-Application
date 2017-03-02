@@ -12,7 +12,7 @@ namespace List_manager.Models
     public static class MALApi
     {
 
-        public static async Task<AnimeList> MALSearch(string username, string password, string query)
+        public static async Task<MALSearchList> MALSearch(string username, string password, string query)
         {
             string uri = $"https://myanimelist.net/api/anime/search.xml?q={query}";
 
@@ -30,7 +30,7 @@ namespace List_manager.Models
 
             }
 
-            return  XmlConvert.DeserializeObject<AnimeList>(result);
+            return  XmlConvert.DeserializeObject<MALSearchList>(result);
         }
 
         public static async Task<HttpResponseMessage> MALAdd(string username, string password, int id, UserAnimeData data)

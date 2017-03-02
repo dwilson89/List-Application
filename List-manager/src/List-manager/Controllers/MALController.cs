@@ -36,6 +36,7 @@ namespace List_manager.Controllers
             _userManager = userManager;
         }
 
+        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         //Add
 
@@ -200,13 +201,42 @@ namespace List_manager.Controllers
                 return RedirectToAction("Login", "MALAccount", new { returnUrl = "/Animes/Search" });
             }
 
-            AnimeList list = new Models.AnimeList();
+            MALSearchList list = new Models.MALSearchList();
             if (!String.IsNullOrEmpty(searchString))
             {
 
                 list = await MALApi.MALSearch(malUser.Username, malUser.Password, searchString);
                 _cache.CreateEntry("SearchResults");
                 _cache.Set("SearchResults", list);
+
+                var user = await GetCurrentUserAsync();
+                var userId = user?.Id;
+
+                List<Anime> anime = _context.UserAnimes.Where(d => d.ApplicationUserId == userId).Include(u => u.Anime).Select(a => a.Anime).ToList();
+
+                //For each entry
+                //Does the list contain it
+                //result true or false
+
+                var v = from x in list.EntryList
+                        select (from y in anime
+                                           select y.MALID).Contains(x.MALID);
+
+                List<bool> test = v.ToList();
+
+                MALUserList malList;
+
+                if (!_cache.TryGetValue("MALAnimeList", out malList))
+                {
+                    malList = await MALApi.MALUserInfo(malUser.Username, "all", "anime");
+
+                    _cache.Set("MALAnimeList", malList);
+                }
+
+                var t = from x in list.EntryList
+                        select (from y in malList.MALAnimeList
+                                select y.Series_Animedb_Id).Contains(x.MALID);
+
 
             }
 

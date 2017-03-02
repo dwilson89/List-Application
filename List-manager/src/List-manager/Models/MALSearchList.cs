@@ -7,10 +7,11 @@ using System.Xml.Serialization;
 namespace List_manager.Models
 {
     [XmlRoot("anime")]
-    public class AnimeList
+    public class MALSearchList
     {
-        public AnimeList() { EntryList = new List<Anime>(); }
+        public MALSearchList() { EntryList = new List<Anime>(); }
         [XmlElement("entry")]
         public List<Anime> EntryList { get; set; }
+
     }
 }

@@ -3,11 +3,20 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using List_manager.Models;
 using System.Security.Claims;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace List_manager.Controllers
 {
     public class MALAccountController : Controller
     {
+
+        private IMemoryCache _cache;
+
+        public MALAccountController(IMemoryCache cache)
+        {
+            _cache = cache;
+        }
+
         // GET: /MALAccount/Login
         [HttpGet]
         public IActionResult Login(string returnUrl = null)
@@ -42,6 +51,10 @@ namespace List_manager.Controllers
 
                     //TODO: might add in an expiration date
                     await HttpContext.Authentication.SignInAsync("MALCookie", principal);
+
+                    _cache.CreateEntry("MALAnimeList");
+
+                    _cache.Set("MALAnimeList", await MALApi.MALUserInfo(malUser.Username, "all", "anime"));
 
                     return Redirect(returnUrl);
 

@@ -10,13 +10,9 @@ namespace List_manager.Models
     public class MALUserList
     {
         public MALUserList() { MALAnimeList = new List<MALUserAnime>(); }
-        [XmlElement("anime")]
-        public List<MALUserAnime> MALAnimeList { get; set; }
         [XmlElement("myinfo")]
         public MALUserInfo UserInfo { get; set; }
-
-
-
-
+        [XmlElement("anime")]
+        public List<MALUserAnime> MALAnimeList { get; set; }
     }
 }
