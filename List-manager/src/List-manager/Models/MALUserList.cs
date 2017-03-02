@@ -14,5 +14,9 @@ namespace List_manager.Models
         public List<MALUserAnime> MALAnimeList { get; set; }
         [XmlElement("myinfo")]
         public MALUserInfo UserInfo { get; set; }
+
+
+
+
     }
 }

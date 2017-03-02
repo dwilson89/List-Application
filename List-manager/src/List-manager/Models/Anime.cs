@@ -47,8 +47,6 @@ namespace List_manager.Models
             return $"https://myanimelist.net/anime/{MALID}/{Title.Replace(" ", "_")}";
         }  
 
-       
-
         //public DateTime Updated_Date { get; set; }
 
        
