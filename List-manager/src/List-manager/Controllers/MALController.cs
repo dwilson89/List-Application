@@ -212,17 +212,25 @@ namespace List_manager.Controllers
                 var user = await GetCurrentUserAsync();
                 var userId = user?.Id;
 
-                List<Anime> anime = _context.UserAnimes.Where(d => d.ApplicationUserId == userId).Include(u => u.Anime).Select(a => a.Anime).ToList();
+                List<UserAnime> anime = _context.UserAnimes.Where(d => d.ApplicationUserId == userId).Include(u => u.Anime).ToList();
 
                 //For each entry
                 //Does the list contain it
                 //result true or false
-
+                /*
                 var v = from x in list.EntryList
-                        select (from y in anime
-                                           select y.MALID).Contains(x.MALID);
+                        select new
+                        {
+                            Anime = x,
+                            isInList = (from y in anime
+                                        select y.MALID).Contains(x.MALID),
+                            isInMalList = (from y in malList.MALAnimeList
+                                           select y.Series_Animedb_Id).Contains(x.MALID);
+                };
+                */
+                //List<bool> test = v.ToList();
 
-                List<bool> test = v.ToList();
+
 
                 MALUserList malList;
 
@@ -233,9 +241,35 @@ namespace List_manager.Controllers
                     _cache.Set("MALAnimeList", malList);
                 }
 
-                var t = from x in list.EntryList
-                        select (from y in malList.MALAnimeList
-                                select y.Series_Animedb_Id).Contains(x.MALID);
+                /*var v = from x in list.EntryList
+                    select new AnimeResult
+                    {
+                        Anime = x,
+                        User_Status = (from y in anime
+                                    select y.MALID).Contains(x.MALID),
+                        MAL_User_Status = (from y in malList.MALAnimeList
+                                       select y.Series_Animedb_Id).Contains(x.MALID)
+                    };
+                */
+
+                /*
+                var animeTest = _context.UserAnimes.Where(d => d.ApplicationUserId == userId).Include(u => u.Anime).Select(a => new { anime = a.Anime, malid = a.Anime.MALID, UserStat = a.User_Status}).ToList();
+
+                
+                var t = (from x in list.EntryList
+                         from y in animeTest.Where(a => a.malid == x.MALID).DefaultIfEmpty() select new { Anime = x, UserStatus = y == null ? null : y.UserStat});
+
+                /*var t = from c in list.EntryList
+                        join p in malList.MALAnimeList on c.MALID equals p.Series_Animedb_Id into status
+                        from p in status.DefaultIfEmpty()
+                        select p.My_Status;
+                */
+                var diff = from e in list.EntryList
+                           from vvv in malList.MALAnimeList.Where(f => f.Series_Animedb_Id == e.MALID).DefaultIfEmpty()
+                           from au in anime.Where(aua => aua.Anime.MALID == e.MALID).DefaultIfEmpty()
+                           select new AnimeResult { Anime = e, MAL_User_Status = vvv == null ? null : vvv.My_Status.ToString(), User_Status=au == null ? null :au.User_Status};
+
+                
 
 
             }

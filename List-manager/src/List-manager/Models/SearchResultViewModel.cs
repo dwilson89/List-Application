@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 
 namespace List_manager.Models
 {
-    public class SearchResultViewModel : MALSearchList
+    public class SearchResultViewModel
     {
-        List<bool> OnLocalList { get; set; }
-
+        List<AnimeResult> SearchResults { get; set; }
     }
 }
