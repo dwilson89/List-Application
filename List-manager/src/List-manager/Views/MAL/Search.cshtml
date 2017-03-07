@@ -1,4 +1,4 @@
-@model MALSearchList
+@model SearchResultViewModel
 
 @{
     ViewData["Title"] = "MAL Search";
@@ -40,79 +40,107 @@ window.setTimeout(function() {
 
 <div class="container-fluid bg-2">
 
-    @if (Model.EntryList.Count != 0)
+    @if (Model.SearchResults.Count != 0)
     {
         <table class="table table-bordered table-striped text-center table-responsive container-fluid">
             <tr>
 
                 <th>
-                    @Html.DisplayNameFor(modelItem => modelItem.EntryList[0].Title)
+                    @Html.DisplayNameFor(modelItem => modelItem.SearchResults[0].Anime.Title)
                 </th>
 
                 <th>
-                    @Html.DisplayNameFor(modelItem => modelItem.EntryList[0].Score)
+                    @Html.DisplayNameFor(modelItem => modelItem.SearchResults[0].Anime.Score)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(modelItem => modelItem.EntryList[0].Status)
+                    @Html.DisplayNameFor(modelItem => modelItem.SearchResults[0].Anime.Status)
                 </th>
+                <th>
+                    @Html.DisplayNameFor(modelItem => modelItem.SearchResults[0].MAL_User_Status)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(modelItem => modelItem.SearchResults[0].User_Status)
+                </th>
+
             </tr>
 
             <tbody>
 
-                @foreach (var item in Model.EntryList)
+                @foreach (var item in Model.SearchResults)
                 {
                     <tr>
                         <td class="title-desc col-md-7">
 
                             <div class="col-sm-2">
 
-                                <img src="@Url.Content(@item.Image)" class="img-responsive">
+                                <img src="@Url.Content(@item.Anime.Image)" class="img-responsive">
                             </div>
 
                             <div class="col-sm-10">
-                                <a href="@Url.Content(@item.GetLink())">@Html.DisplayFor(modelItem => item.Title)</a>
+                                <a href="@Url.Content(@item.Anime.GetLink())">@Html.DisplayFor(modelItem => item.Anime.Title)</a>
 
-                                @if (!String.IsNullOrEmpty(@item.English))
+                                @if (!String.IsNullOrEmpty(@item.Anime.English))
                                 {
 
-                                    <p>Eng: @Html.DisplayFor(modelItem => item.English)</p>
+                                    <p>Eng: @Html.DisplayFor(modelItem => item.Anime.English)</p>
                                 }
 
-                                @if (!String.IsNullOrEmpty(@item.Synonyms))
+                                @if (!String.IsNullOrEmpty(@item.Anime.Synonyms))
                                 {
-                                    <p>Syn: @Html.DisplayFor(modelItem => item.Synonyms)</p>
+                                    <p>Syn: @Html.DisplayFor(modelItem => item.Anime.Synonyms)</p>
                                 }
-                                <p>Type: @Html.DisplayFor(modelItem => item.Type) (@Html.DisplayFor(modelItem => item.Episodes) eps)</p>
-                                <p>@item.GetStartDateNiceFormat() - @item.GetEndDateNiceFormat()</p>
+                                <p>Type: @Html.DisplayFor(modelItem => item.Anime.Type) (@Html.DisplayFor(modelItem => item.Anime.Episodes) eps)</p>
+                                <p>@item.Anime.GetStartDateNiceFormat() - @item.Anime.GetEndDateNiceFormat()</p>
 
                             </div>
                         </td>
 
                         <td class="v-center">
-                            @Html.DisplayFor(modelItem => item.Score)
+                            @Html.DisplayFor(modelItem => item.Anime.Score)
                         </td>
 
                         <td class="v-center">
-                            @Html.DisplayFor(modelItem => item.Status)@*needs to have a conditional on what to display*@
+                            @Html.DisplayFor(modelItem => item.Anime.Status)@*needs to have a conditional on what to display*@
                         </td>
+
                         <td class="v-center">
 
-                            <form asp-action="Add" asp-controller="Animes" method="post">
-                                <input type="hidden" name="MALID" value="@item.MALID" />
-                                <input type="hidden" name="End_Date" value="@item.End_Date" />
-                                <input type="hidden" name="English" value="@item.English" />
-                                <input type="hidden" name="Episodes" value="@item.Episodes" />
-                                <input type="hidden" name="Image" value="@item.Image" />
-                                <input type="hidden" name="Score" value="@item.Score" />
-                                <input type="hidden" name="Start_Date" value="@item.Start_Date" />
-                                <input type="hidden" name="Status" value="@item.Status" />
-                                <input type="hidden" name="Synonyms" value="@item.Synonyms" />
-                                <input type="hidden" name="Synopsis" value="@item.Synopsis" />
-                                <input type="hidden" name="Title" value="@item.Title" />
-                                <input type="hidden" name="Type" value="@item.Type" />
-                                <input type="submit" value="Add" class="btn btn-info syn-btn" />
-                            </form>
+                            @if (item.MAL_User_Status == null || item.MAL_User_Status == "")
+                            {
 
+
+                            } else
+                            {
+                                @Html.DisplayFor(modelItem => item.MAL_User_Status)@*needs to have a conditional on what to display*@
+                            }
+
+                            
+                        </td>
+
+                        <td class="v-center">
+
+                            @if(item.User_Status == null || item.User_Status == "")
+                            {
+                                <form asp-action="Add" asp-controller="Animes" method="post">
+                                    <input type="hidden" name="MALID" value="@item.Anime.MALID" />
+                                    <input type="hidden" name="End_Date" value="@item.Anime.End_Date" />
+                                    <input type="hidden" name="English" value="@item.Anime.English" />
+                                    <input type="hidden" name="Episodes" value="@item.Anime.Episodes" />
+                                    <input type="hidden" name="Image" value="@item.Anime.Image" />
+                                    <input type="hidden" name="Score" value="@item.Anime.Score" />
+                                    <input type="hidden" name="Start_Date" value="@item.Anime.Start_Date" />
+                                    <input type="hidden" name="Status" value="@item.Anime.Status" />
+                                    <input type="hidden" name="Synonyms" value="@item.Anime.Synonyms" />
+                                    <input type="hidden" name="Synopsis" value="@item.Anime.Synopsis" />
+                                    <input type="hidden" name="Title" value="@item.Anime.Title" />
+                                    <input type="hidden" name="Type" value="@item.Anime.Type" />
+                                    <input type="submit" value="Add" class="btn btn-info syn-btn" />
+                                </form>
+                            }
+                            else
+                            {
+                                @Html.DisplayFor(modelItem => item.User_Status)@*needs to have a conditional on what to display*@
+                            }
                         </td>
                     </tr>
                 }

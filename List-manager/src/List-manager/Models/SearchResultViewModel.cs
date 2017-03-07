@@ -7,6 +7,8 @@ namespace List_manager.Models
 {
     public class SearchResultViewModel
     {
-        List<AnimeResult> SearchResults { get; set; }
+        public SearchResultViewModel() { SearchResults = new List<Models.AnimeResult>(); }
+
+        public List<AnimeResult> SearchResults { get; set; }
     }
 }
