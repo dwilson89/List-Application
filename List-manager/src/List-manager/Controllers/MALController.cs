@@ -227,7 +227,7 @@ namespace List_manager.Controllers
                 var combineResults = from entrylist in list.EntryList
                            from malAnimeList in malList.MALAnimeList.Where(f => f.Series_Animedb_Id == entrylist.MALID).DefaultIfEmpty()
                            from animeUser in anime.Where(aua => aua.Anime.MALID == entrylist.MALID).DefaultIfEmpty()
-                           select new AnimeResult { Anime = entrylist, MAL_User_Status = malAnimeList == null ? null : malAnimeList.My_Status.ToString(), User_Status=animeUser == null ? null :animeUser.User_Status};
+                           select new AnimeResult { Anime = entrylist, MAL_User_Status = malAnimeList == null ? null : malAnimeList.StatusToString(), User_Status=animeUser == null ? null :animeUser.User_Status};
 
                 searchResults.SearchResults.AddRange(combineResults.ToList());
 

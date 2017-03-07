@@ -38,40 +38,7 @@ namespace List_manager.Models
         public int My_Score { get; set; }
         //1/watching, 2/completed, 3/onhold, 4/dropped, 6/plantowatch
         [XmlElement("my_status")]
-        public string My_Status
-        {
-            get
-            {
-                return my_status;
-            }
-            set // if something changes in the future with this, need to change switch
-            {
-                switch (value)
-                {
-                    case "1":
-                        my_status = "Watching";
-                        break;
-                    case "2":
-                        my_status = "Completed";
-                        break;
-                    case "3":
-                        my_status = "On Hold";
-                        break;
-                    case "4":
-                        my_status = "Dropped";
-                        break;
-                    case "6":
-                        my_status = "Plan to Watch";
-                        break;
-                    default:
-                       
-                        my_status = value;
-                        break;
-                }
-            }
-        }
-
-        private string my_status;
+        public string My_Status { get; set; }
         [XmlElement("my_rewatching")]
         public string My_Rewatching { get; set; }
         [XmlElement("my_rewatching_ep")]
@@ -80,5 +47,35 @@ namespace List_manager.Models
         public string My_Last_Updated { get; set; }
         [XmlElement("my_tags")]
         public string My_Tags { get; set; }
-    }
+
+        public string StatusToString()
+        {
+            string my_status;
+            switch (My_Status)
+            {
+                case "1":
+                    my_status = "Watching";
+                    break;
+                case "2":
+                    my_status = "Completed";
+                    break;
+                case "3":
+                    my_status = "On Hold";
+                    break;
+                case "4":
+                    my_status = "Dropped";
+                    break;
+                case "6":
+                    my_status = "Plan to Watch";
+                    break;
+                default:
+                       
+                    my_status = My_Status;
+                    break;
+            }
+
+            return my_status;
+        }
+        
+}
 }

@@ -1,0 +1,140 @@
+@model List_manager.Models.UserAnimeData
+
+@{
+    ViewData["Title"] = "Add";
+}
+
+<h2>Add</h2>
+
+<form asp-action="Add">
+    <div class="form-horizontal">
+        <h4>UserAnimeData</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Episode" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Episode" class="form-control" />
+                <span asp-validation-for="Episode" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Status" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Status" class="form-control" />
+                <span asp-validation-for="Status" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Score" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Score" class="form-control" />
+                <span asp-validation-for="Score" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Storage_Type" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Storage_Type" class="form-control" />
+                <span asp-validation-for="Storage_Type" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Storage_Value" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Storage_Value" class="form-control" />
+                <span asp-validation-for="Storage_Value" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Times_Rewatched" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Times_Rewatched" class="form-control" />
+                <span asp-validation-for="Times_Rewatched" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Rewatch_Value" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Rewatch_Value" class="form-control" />
+                <span asp-validation-for="Rewatch_Value" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Date_Start_Str" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Date_Start_Str" class="form-control" />
+                <span asp-validation-for="Date_Start_Str" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Date_Finish_Str" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Date_Finish_Str" class="form-control" />
+                <span asp-validation-for="Date_Finish_Str" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Priority" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Priority" class="form-control" />
+                <span asp-validation-for="Priority" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Enable_Discussion" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Enable_Discussion" class="form-control" />
+                <span asp-validation-for="Enable_Discussion" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Enable_Rewatching" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Enable_Rewatching" class="form-control" />
+                <span asp-validation-for="Enable_Rewatching" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Comments" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Comments" class="form-control" />
+                <span asp-validation-for="Comments" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Tags" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Tags" class="form-control" />
+                <span asp-validation-for="Tags" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Date_Start" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Date_Start" class="form-control" />
+                <span asp-validation-for="Date_Start" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Date_Finish" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Date_Finish" class="form-control" />
+                <span asp-validation-for="Date_Finish" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
