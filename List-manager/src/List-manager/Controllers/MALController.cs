@@ -224,10 +224,10 @@ namespace List_manager.Controllers
                     _cache.Set("MALAnimeList", malList);
                 }
 
-                var combineResults = from e in list.EntryList
-                           from vvv in malList.MALAnimeList.Where(f => f.Series_Animedb_Id == e.MALID).DefaultIfEmpty()
-                           from au in anime.Where(aua => aua.Anime.MALID == e.MALID).DefaultIfEmpty()
-                           select new AnimeResult { Anime = e, MAL_User_Status = vvv == null ? null : vvv.My_Status.ToString(), User_Status=au == null ? null :au.User_Status};
+                var combineResults = from entrylist in list.EntryList
+                           from malAnimeList in malList.MALAnimeList.Where(f => f.Series_Animedb_Id == entrylist.MALID).DefaultIfEmpty()
+                           from animeUser in anime.Where(aua => aua.Anime.MALID == entrylist.MALID).DefaultIfEmpty()
+                           select new AnimeResult { Anime = entrylist, MAL_User_Status = malAnimeList == null ? null : malAnimeList.My_Status.ToString(), User_Status=animeUser == null ? null :animeUser.User_Status};
 
                 searchResults.SearchResults.AddRange(combineResults.ToList());
 

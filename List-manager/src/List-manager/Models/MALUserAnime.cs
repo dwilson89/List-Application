@@ -36,8 +36,42 @@ namespace List_manager.Models
         public string My_Finish_Date { get; set; }
         [XmlElement("my_score")]
         public int My_Score { get; set; }
+        //1/watching, 2/completed, 3/onhold, 4/dropped, 6/plantowatch
         [XmlElement("my_status")]
-        public int My_Status { get; set; }
+        public string My_Status
+        {
+            get
+            {
+                return my_status;
+            }
+            set // if something changes in the future with this, need to change switch
+            {
+                switch (value)
+                {
+                    case "1":
+                        my_status = "Watching";
+                        break;
+                    case "2":
+                        my_status = "Completed";
+                        break;
+                    case "3":
+                        my_status = "On Hold";
+                        break;
+                    case "4":
+                        my_status = "Dropped";
+                        break;
+                    case "6":
+                        my_status = "Plan to Watch";
+                        break;
+                    default:
+                       
+                        my_status = value;
+                        break;
+                }
+            }
+        }
+
+        private string my_status;
         [XmlElement("my_rewatching")]
         public string My_Rewatching { get; set; }
         [XmlElement("my_rewatching_ep")]
