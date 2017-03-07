@@ -41,20 +41,11 @@ namespace List_manager.Controllers
         //Add
 
         // GET: MAL/Add
-        public async Task<IActionResult> Add(int? id)
+        public IActionResult Add(int malid, string animeName)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var anime = await _context.Anime.SingleOrDefaultAsync(m => m.ID == id);
-            if (anime == null)
-            {
-                return NotFound();
-            }
-
-            return View(anime);
+            ViewData["anime"] = animeName;
+            ViewData["animeID"] = malid;
+            return View(new UserAnimeData());
         }
 
         // POST: MAL/Add
@@ -95,24 +86,15 @@ namespace List_manager.Controllers
         }
 
         //Update
-        /*
+        
         // GET: MAL/Add
-        public async Task<IActionResult> Update(int? id)
+        public IActionResult Update(int malid, string animeName)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var anime = await _context.Anime.SingleOrDefaultAsync(m => m.ID == id);
-            if (anime == null)
-            {
-                return NotFound();
-            }
-
-            return View(anime);
+            ViewData["anime"] = animeName;
+            ViewData["animeID"] = malid;
+            return View(new UserAnimeData());
         }
-        */
+        
 
         // POST: MAL/Add
         [HttpPost]

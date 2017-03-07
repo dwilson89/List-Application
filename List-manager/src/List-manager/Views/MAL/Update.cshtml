@@ -1,16 +1,16 @@
 @model List_manager.Models.UserAnimeData
 
 @{
-    ViewData["Title"] = "Add";
+    ViewData["Title"] = "Update";
 }
 
-<h2>MAL Add</h2>
+<h2>MAL Update</h2>
 
 <h3>@ViewData["anime"]</h3>
 
-<form asp-action="Add" asp-controller="MAL">
+<form asp-action="Update" asp-controller="MAL">
     <div class="form-horizontal">
-        <input type="hidden" name="animeId" value="@ViewData["animeID"]" />
+        <input type="hidden" name="animeId" value="@ViewData["AnimeID"]" />
 
         @Html.Partial("_MALEditPartial", Model)
 
