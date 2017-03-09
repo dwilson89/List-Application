@@ -106,9 +106,9 @@ namespace List_manager.Models
 
         public UserAnimeData(MALUserAnime malAnime)
         {
-            if (!String.IsNullOrEmpty(malAnime.My_Finish_Date))
+            if (!String.IsNullOrEmpty(malAnime.My_Finish_Date) && (malAnime.My_Finish_Date != "0000-00-00"))
                 this.Date_Finish = Convert.ToDateTime(malAnime.My_Finish_Date);
-            if (!String.IsNullOrEmpty(malAnime.My_Start_Date))
+            if (!String.IsNullOrEmpty(malAnime.My_Start_Date) && (malAnime.My_Start_Date != "0000-00-00"))
                 this.Date_Start = Convert.ToDateTime(malAnime.My_Start_Date);
 
             this.Episode = malAnime.My_Watched_Episodes;

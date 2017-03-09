@@ -88,10 +88,22 @@ namespace List_manager.Controllers
         //Update
         
         // GET: MAL/Add
-        public IActionResult Update(int malid, string animeName)
+        public async Task<IActionResult> Update(int malid, string animeName)
         {
             ViewData["anime"] = animeName;
             ViewData["animeID"] = malid;
+
+            MALUserLogin malUser = GetUserCredentials();
+
+            if (malUser == null)
+            {
+                return RedirectToAction("Login", "MALAccount", new { returnUrl = "/Animes/Search" });
+            }
+
+            var malDict = await GetMALUserDictionary(malUser);
+
+            UserAnimeData userAnimeData = new UserAnimeData(malDict.MALAnimeDictionary[malid]);
+
             return View(new UserAnimeData());
         }
         
@@ -197,7 +209,9 @@ namespace List_manager.Controllers
 
                 List<UserAnime> anime = _context.UserAnimes.Where(d => d.ApplicationUserId == userId).Include(u => u.Anime).ToList();
 
-                List<MALUserAnime> malList = await GetMALUserList(malUser);
+                var malDict = await GetMALUserDictionary(malUser);
+
+                List <MALUserAnime> malList = malDict.MALAnimeDictionary.Values.ToList();
 
                 var combineResults = from entrylist in list.EntryList
                                      from malAnimeList in malList.Where(f => f.Series_Animedb_Id == entrylist.MALID).DefaultIfEmpty()
@@ -211,23 +225,21 @@ namespace List_manager.Controllers
             return View(searchResults);
         }
 
-        private async Task<List<MALUserAnime>> GetMALUserList(MALUserLogin malUser)
+        private async Task<MALUserDictionary> GetMALUserDictionary(MALUserLogin malUser)
         {
-            List<MALUserAnime> malList;
+            
             MALUserDictionary malUserDict;
 
             if (!_cache.TryGetValue("MALAnimeList", out malUserDict))
             {
                 MALUserList malUserList = await MALApi.MALUserInfo(malUser.Username, "all", "anime");
 
-                //_cache.Set("MALAnimeList", malList);
-                _cache.Set("MALAnimeList", new MALUserDictionary(malUserList));
-                return malUserList.MALAnimeList;
+                malUserDict = new MALUserDictionary(malUserList);
+
+                _cache.Set("MALAnimeList", malUserDict);
             }
 
-            malList = malUserDict.MALAnimeDictionary.Values.ToList();
-
-            return malList;
+            return malUserDict;
         }
 
         private MALUserLogin GetUserCredentials()
