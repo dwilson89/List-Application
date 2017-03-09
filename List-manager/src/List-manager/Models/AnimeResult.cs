@@ -17,6 +17,7 @@ namespace List_manager.Models
         [Display(Name = "MAL User Status")]
         public string MAL_User_Status { get; set; }
 
-        public Anime Anime { get; set; }  
+        public Anime Anime { get; set; }
+
     }
 }

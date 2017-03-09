@@ -197,19 +197,12 @@ namespace List_manager.Controllers
 
                 List<UserAnime> anime = _context.UserAnimes.Where(d => d.ApplicationUserId == userId).Include(u => u.Anime).ToList();
 
-                MALUserList malList;
-
-                if (!_cache.TryGetValue("MALAnimeList", out malList))
-                {
-                    malList = await MALApi.MALUserInfo(malUser.Username, "all", "anime");
-
-                    _cache.Set("MALAnimeList", malList);
-                }
+                List<MALUserAnime> malList = await GetMALUserList(malUser);
 
                 var combineResults = from entrylist in list.EntryList
-                           from malAnimeList in malList.MALAnimeList.Where(f => f.Series_Animedb_Id == entrylist.MALID).DefaultIfEmpty()
-                           from animeUser in anime.Where(aua => aua.Anime.MALID == entrylist.MALID).DefaultIfEmpty()
-                           select new AnimeResult { Anime = entrylist, MAL_User_Status = malAnimeList == null ? null : malAnimeList.StatusToString(), User_Status=animeUser == null ? null :animeUser.User_Status};
+                                     from malAnimeList in malList.Where(f => f.Series_Animedb_Id == entrylist.MALID).DefaultIfEmpty()
+                                     from animeUser in anime.Where(aua => aua.Anime.MALID == entrylist.MALID).DefaultIfEmpty()
+                                     select new AnimeResult { Anime = entrylist, MAL_User_Status = malAnimeList == null ? null : malAnimeList.StatusToString(), User_Status = animeUser == null ? null : animeUser.User_Status};
 
                 searchResults.SearchResults.AddRange(combineResults.ToList());
 
@@ -218,6 +211,24 @@ namespace List_manager.Controllers
             return View(searchResults);
         }
 
+        private async Task<List<MALUserAnime>> GetMALUserList(MALUserLogin malUser)
+        {
+            List<MALUserAnime> malList;
+            MALUserDictionary malUserDict;
+
+            if (!_cache.TryGetValue("MALAnimeList", out malUserDict))
+            {
+                MALUserList malUserList = await MALApi.MALUserInfo(malUser.Username, "all", "anime");
+
+                //_cache.Set("MALAnimeList", malList);
+                _cache.Set("MALAnimeList", new MALUserDictionary(malUserList));
+                return malUserList.MALAnimeList;
+            }
+
+            malList = malUserDict.MALAnimeDictionary.Values.ToList();
+
+            return malList;
+        }
 
         private MALUserLogin GetUserCredentials()
         {

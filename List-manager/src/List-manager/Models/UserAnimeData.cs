@@ -62,7 +62,8 @@ namespace List_manager.Models
         [XmlElement("tags")]
         public string Tags { get; set; }
 
-        
+        [XmlIgnoreAttribute]
+        public int Rewatch_Episodes { get; set; }
 
         [XmlIgnoreAttribute]
         public DateTime? Date_Start
@@ -100,6 +101,34 @@ namespace List_manager.Models
         private DateTime? date_start;
         [XmlIgnoreAttribute]
         private DateTime? date_finish;
+
+        public UserAnimeData() { }
+
+        public UserAnimeData(MALUserAnime malAnime)
+        {
+            if (!String.IsNullOrEmpty(malAnime.My_Finish_Date))
+                this.Date_Finish = Convert.ToDateTime(malAnime.My_Finish_Date);
+            if (!String.IsNullOrEmpty(malAnime.My_Start_Date))
+                this.Date_Start = Convert.ToDateTime(malAnime.My_Start_Date);
+
+            this.Episode = malAnime.My_Watched_Episodes;
+            this.Score = malAnime.My_Score;
+            this.Status = Convert.ToInt32(malAnime.My_Status);
+            this.Tags = malAnime.My_Tags;
+            if (!String.IsNullOrEmpty(malAnime.My_Rewatching))
+            {
+                this.Times_Rewatched = Convert.ToInt32(malAnime.My_Rewatching);
+
+            }
+            if (!String.IsNullOrEmpty(malAnime.My_Rewatching_Ep))
+            {
+                this.Rewatch_Episodes = Convert.ToInt32(malAnime.My_Rewatching_Ep);
+                if (this.Rewatch_Episodes > 0)
+                {
+                    this.Enable_Rewatching = 1;
+                }
+            }
+        }
 
     }
 }

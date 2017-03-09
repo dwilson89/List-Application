@@ -54,7 +54,7 @@ namespace List_manager.Controllers
 
                     _cache.CreateEntry("MALAnimeList");
 
-                    _cache.Set("MALAnimeList", await MALApi.MALUserInfo(malUser.Username, "all", "anime"));
+                    _cache.Set("MALAnimeList", new MALUserDictionary(await MALApi.MALUserInfo(malUser.Username, "all", "anime")));
 
                     return Redirect(returnUrl);
 
