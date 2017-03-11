@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace List_manager.Models
 {
-    public class AnimeResult
+    public class Result
     {
 
         [Display(Name = "User Status")]
@@ -16,8 +16,6 @@ namespace List_manager.Models
         [NotMapped]
         [Display(Name = "MAL User Status")]
         public string MAL_User_Status { get; set; }
-
-        public Anime Anime { get; set; }
 
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace List_manager.Models
+namespace List_manager.Models.MALObjects
 {
     [XmlRoot("myanimelist")]
     public class MALUserList

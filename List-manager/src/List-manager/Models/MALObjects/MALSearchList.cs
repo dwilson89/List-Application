@@ -4,14 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace List_manager.Models
+namespace List_manager.Models.MALObjects
 {
     [XmlRoot("anime")]
     public class MALSearchList
     {
-        public MALSearchList() { EntryList = new List<Anime>(); }
+        public MALSearchList() { EntryList = new List<Entry>(); }
         [XmlElement("entry")]
-        public List<Anime> EntryList { get; set; }
+        public List<Entry> EntryList { get; set; }
 
     }
 }

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace List_manager.Models
+namespace List_manager.Models.MALObjects
 {
     /**
      * Class for the datatype being sent back to the MAL API in order to be used to update/Add an entry to the users list.

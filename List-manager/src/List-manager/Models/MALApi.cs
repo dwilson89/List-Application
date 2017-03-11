@@ -6,6 +6,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using List_manager.Models.MALObjects;
 
 namespace List_manager.Models
 {

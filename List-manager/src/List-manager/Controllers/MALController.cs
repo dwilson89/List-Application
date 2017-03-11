@@ -15,6 +15,7 @@ using System.Xml;
 using System.IO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
+using List_manager.Models.MALObjects;
 
 
 /*TODO - Once Implemented on the Front End properly finish off*/
@@ -195,7 +196,7 @@ namespace List_manager.Controllers
                 return RedirectToAction("Login", "MALAccount", new { returnUrl = "/Animes/Search" });
             }
 
-            MALSearchList list = new Models.MALSearchList();
+            MALSearchList list = new Models.MALObjects.MALSearchList();
             SearchResultViewModel searchResults = new SearchResultViewModel(); 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -211,12 +212,12 @@ namespace List_manager.Controllers
 
                 var malDict = await GetMALUserDictionary(malUser);
 
-                List <MALUserAnime> malList = malDict.MALAnimeDictionary.Values.ToList();
+                List <Models.MALObjects.MALUserAnime> malList = malDict.MALAnimeDictionary.Values.ToList();
 
-                var combineResults = from entrylist in list.EntryList
-                                     from malAnimeList in malList.Where(f => f.Series_Animedb_Id == entrylist.MALID).DefaultIfEmpty()
-                                     from animeUser in anime.Where(aua => aua.Anime.MALID == entrylist.MALID).DefaultIfEmpty()
-                                     select new AnimeResult { Anime = entrylist, MAL_User_Status = malAnimeList == null ? null : malAnimeList.StatusToString(), User_Status = animeUser == null ? null : animeUser.User_Status};
+                var combineResults = from entry in list.EntryList
+                                     from malAnimeList in malList.Where(f => f.Series_Animedb_Id == entry.MALID).DefaultIfEmpty()
+                                     from animeUser in anime.Where(aua => aua.Anime.MALID == entry.MALID).DefaultIfEmpty()
+                                     select new EntryResult { Entry = entry, MAL_User_Status = malAnimeList == null ? null : malAnimeList.StatusToString(), User_Status = animeUser == null ? null : animeUser.User_Status};
 
                 searchResults.SearchResults.AddRange(combineResults.ToList());
 
